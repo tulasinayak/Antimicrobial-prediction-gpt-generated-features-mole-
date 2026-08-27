@@ -1,0 +1,11 @@
+feature,importance,feature_name
+f83,434.1815490722656,gpt__num_nitro_groups
+f68,284.8592834472656,gpt__negative_charge_count
+f84,234.225341796875,gpt__num_sulfonamide_groups
+f149,226.52423095703125,gpt__num_fused_aliphatic_rings
+f143,208.35101318359375,gpt__num_acidic_rings
+f107,146.27896118164062,gpt__num_ring_sulfurs
+f40,133.87783813476562,gpt__molecular_weight
+f76,108.75881958007812,gpt__num_bridgehead_atoms
+f88,87.34226989746094,gpt__num_halogenated_carbons
+f89,78.81950378417969,gpt__num_chiral_centers

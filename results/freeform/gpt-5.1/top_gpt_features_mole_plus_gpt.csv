@@ -1,0 +1,11 @@
+feature,importance,feature_name
+f1010,2702.19873046875,gpt__heteroatom_count
+f1439,787.75,gpt__toxicity_reactive_metabolite_risk_index
+f1270,680.0201416015625,gpt__metal_binding_site_count_soft
+f1271,571.9547729492188,gpt__metal_binding_site_count_hard
+f1102,407.96246337890625,gpt__pka_strongest_basic
+f1257,350.325927734375,gpt__intramolecular_hbond_likelihood
+f1328,336.1884765625,gpt__outer_membrane_permeation_index_gram_negative
+f1324,318.4215087890625,gpt__hydrophilic_lipophilic_balance_index
+f1076,308.13232421875,gpt__num_pyrimidine_like_cores
+f1396,306.6187438964844,gpt__similarity_to_sulfonamides_index

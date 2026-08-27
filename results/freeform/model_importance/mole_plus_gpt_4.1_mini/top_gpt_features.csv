@@ -1,0 +1,11 @@
+feature,importance,feature_name
+f977,45.564151763916016,gpt__composition.hetero_atom_count
+f998,35.399314880371094,gpt__surface_properties.polar_surface_fraction
+f984,32.71722412109375,gpt__physicochemical.molecular_weight
+f985,18.57298469543457,gpt__physicochemical.logP_est
+f988,14.141702651977539,gpt__physicochemical.h_bond_acceptors
+f986,11.874415397644043,gpt__physicochemical.tpsa_est
+f1012,6.864853382110596,gpt__functional_motifs.contains_heteroaromatic_ring
+f999,6.206584930419922,gpt__surface_properties.hydrophobic_surface_fraction
+f1005,4.589309215545654,gpt__antimicrobial_relevant.rigidity_index
+f1014,4.5825090408325195,gpt__safety_flags.structural_alerts.count

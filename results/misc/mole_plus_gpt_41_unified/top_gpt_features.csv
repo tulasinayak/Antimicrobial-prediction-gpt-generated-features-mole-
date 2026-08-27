@@ -1,0 +1,11 @@
+feature,importance,feature_name
+f1115,1782.4976806640625,gpt__synthetic_accessibility_score_est
+f1018,1472.1566162109375,gpt__NumHeteroatoms
+f977,1036.42529296875,gpt__hetero_atom_count
+f1087,363.2825012207031,gpt__fr_NH0
+f1108,248.74403381347656,gpt__polar_surface_fraction
+f1097,119.8750228881836,gpt__fr_sulfonamide
+f981,109.3580551147461,gpt__aliphatic_ring_count
+f1019,104.38826751708984,gpt__NumLipinskiHBA
+f996,93.77232360839844,gpt__MolLogP
+f1112,82.90282440185547,gpt__aromaticity_fraction

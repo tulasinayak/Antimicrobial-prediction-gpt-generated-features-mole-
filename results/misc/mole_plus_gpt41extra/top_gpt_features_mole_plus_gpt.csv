@@ -1,0 +1,11 @@
+feature,importance,feature_name
+f1018,1329.348388671875,gpt__NumHeteroatoms
+f977,1008.6096801757812,gpt__hetero_atom_count
+f1096,570.7750244140625,gpt__fr_halogen
+f990,518.1537475585938,gpt__HeavyAtomMolWt
+f1097,403.8367919921875,gpt__fr_sulfonamide
+f1115,366.7523193359375,gpt__synthetic_accessibility_score_est
+f1058,204.34814453125,gpt__PEOE_VSA12
+f996,169.328125,gpt__MolLogP
+f1105,149.31781005859375,gpt__cationic_centers
+f1104,129.69107055664062,gpt__net_charge_ph7_est

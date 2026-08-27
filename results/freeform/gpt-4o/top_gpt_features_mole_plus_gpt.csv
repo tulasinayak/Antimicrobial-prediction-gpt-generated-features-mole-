@@ -1,0 +1,11 @@
+feature,importance,feature_name
+f985,332.5601501464844,gpt__molecular_weight
+f998,93.60961151123047,gpt__num_thioether_bonds
+f982,91.23899841308594,gpt__num_heteroatoms
+f1012,64.8467025756836,gpt__logp
+f984,48.184181213378906,gpt__num_h_bond_acceptors
+f1023,30.856685638427734,gpt__num_aromatic_bonds
+f986,24.67054557800293,gpt__topological_polar_surface_area
+f999,22.6608829498291,gpt__num_halogen_atoms
+f1005,17.722410202026367,gpt__num_primary_carbons
+f1024,13.627242088317871,gpt__num_non_aromatic_bonds

@@ -1,0 +1,2 @@
+roc_auc,pr_auc,threshold,accuracy,precision,recall,f1,mcc,val_macro_pr_auc_by_strain,test_macro_pr_auc_by_strain,model,best_params
+0.8378662716182628,0.6821498489539841,0.30347874760627747,0.863125,0.5605889014722537,0.6479057591623036,0.6010928961748634,0.5209835008465423,0.6823163131604549,0.6851382036157755,gpt-5.2-freeform,"{'tree_method': 'hist', 'max_bin': 512, 'lambda': 1.0, 'alpha': 0.0, 'objective': 'binary:logistic', 'eval_metric': 'aucpr', 'verbosity': 0, 'eta': 0.05, 'max_depth': 10, 'subsample': 1.0, 'colsample_bytree': 0.5, 'min_child_weight': 5, 'gamma': 0.0}"

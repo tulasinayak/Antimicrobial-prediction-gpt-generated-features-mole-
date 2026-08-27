@@ -1,0 +1,11 @@
+feature,importance,feature_name
+f157,1643.9219970703125,gpt__num_brenk_alerts
+f81,290.5466613769531,gpt__num_sulfonamide_groups
+f199,225.6708526611328,gpt__num_ring_hydrogen_bond_acceptors
+f79,220.4695281982422,gpt__num_nitro_groups
+f176,180.31143188476562,gpt__num_sugar_like_features
+f190,173.91854858398438,gpt__num_ring_sulfurs
+f155,165.54689025878906,gpt__num_structural_alerts
+f117,158.90213012695312,gpt__num_hydrogen_bond_acceptors
+f215,156.5422821044922,gpt__num_ring_purine_like_scaffolds
+f163,152.0515594482422,gpt__num_purine_like_scaffolds

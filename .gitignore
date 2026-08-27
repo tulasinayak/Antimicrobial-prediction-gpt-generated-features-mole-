@@ -1,0 +1,59 @@
+# Jupyter
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+
+# Generated outputs (plots, derived feature matrices) — not committed
+data/feature_matrix_gpt/
+data/final_gpt_features/
+data/gpt41mini/
+data/plot/
+data/plots_41/
+data/plots_41mini/
+data/plots_41mini_1/
+data/plots_final/
+
+# Large files excluded from all result folders — keep small CSVs only
+Result/**/compound_strain_pairs_with_features*.csv
+Result/**/compound_features_combined*.csv
+Result/**/*.pkl
+Result/**/xgb_transformed_features*.csv
+Result/**/raw_features_used*.csv
+
+data/results/**/compound_strain_pairs_with_features*.csv
+data/results/**/compound_features_combined*.csv
+data/results/**/*.pkl
+data/results/**/xgb_transformed_features*.csv
+data/results/**/raw_features_used*.csv
+
+FINAL_RESULT/**/compound_strain_pairs_with_features*.csv
+FINAL_RESULT/**/compound_features_combined*.csv
+FINAL_RESULT/**/*.pkl
+FINAL_RESULT/**/xgb_transformed_features*.csv
+FINAL_RESULT/**/raw_features_used*.csv
+
+# data/model_importance is committed (tiny CSV files extracted from Result/)
+# — no ignore rule needed, it is included by default
+
+# Large raw data files excluded from git
+results/mechchem/*.tsv
+
+# Large intermediate feature matrices (hundreds of MB each)
+results/**/compound_strain_pairs_with_features*.csv
+results/**/compound_features_combined*.csv
+results/**/xgb_transformed_features*.csv
+results/**/raw_features_used*.csv
+results/**/*.pkl
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+
+# API keys — never commit these
+.env
+*.env
+
+# OS
+.DS_Store
+Thumbs.db

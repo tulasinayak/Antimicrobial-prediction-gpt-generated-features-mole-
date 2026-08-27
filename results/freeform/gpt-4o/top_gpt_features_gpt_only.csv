@@ -1,0 +1,11 @@
+feature,importance,feature_name
+f82,52.4828987121582,gpt__num_negative_charges
+f47,32.98207473754883,gpt__num_heteroatoms
+f81,31.709884643554688,gpt__num_positive_charges
+f63,30.313400268554688,gpt__num_thioether_bonds
+f66,29.826379776000977,gpt__num_phosphorus_atoms
+f46,28.501455307006836,gpt__num_aromatic_rings
+f50,28.097511291503906,gpt__molecular_weight
+f64,27.875810623168945,gpt__num_halogen_atoms
+f57,22.222917556762695,gpt__num_aliphatic_carbocycles
+f49,20.42337417602539,gpt__num_h_bond_acceptors

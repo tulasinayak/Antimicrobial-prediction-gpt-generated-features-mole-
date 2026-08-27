@@ -1,0 +1,11 @@
+feature,importance,feature_name
+f79,21.042255401611328,gpt__safety_flags.structural_alerts.count
+f49,20.15943145751953,gpt__physicochemical.molecular_weight
+f63,18.594913482666016,gpt__surface_properties.polar_surface_fraction
+f50,17.354358673095703,gpt__physicochemical.logP_est
+f75,13.900117874145508,gpt__functional_motifs.contains_guanidinium
+f44,13.108851432800293,gpt__rings.ring_count
+f68,12.31346607208252,gpt__antimicrobial_relevant.anionic_centers
+f66,11.521191596984863,gpt__antimicrobial_relevant.net_charge_ph7_est
+f45,11.322437286376953,gpt__rings.aromatic_ring_count
+f47,11.058856964111328,gpt__rings.spiro_center_count

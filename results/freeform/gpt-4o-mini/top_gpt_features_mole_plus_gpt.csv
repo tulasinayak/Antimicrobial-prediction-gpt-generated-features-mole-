@@ -1,0 +1,11 @@
+feature,importance,feature_name
+f993,486.47052001953125,gpt__polar_surface_area
+f975,109.5443115234375,gpt__molecular_weight
+f997,105.8021469116211,gpt__synthetic_accessibility_score
+f977,56.28242111206055,gpt__num_bonds
+f992,50.295143127441406,gpt__log_p
+f986,38.207401275634766,gpt__num_carbon_atoms
+f1000,36.54377365112305,gpt__bioavailability_score
+f985,35.2111701965332,gpt__num_oxygens
+f981,31.20908546447754,gpt__num_rotatable_bonds
+f976,31.04256248474121,gpt__num_atoms

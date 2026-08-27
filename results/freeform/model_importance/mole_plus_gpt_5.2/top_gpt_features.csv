@@ -1,0 +1,11 @@
+feature,importance,feature_name
+f997,40.040489196777344,gpt__surface_properties.polar_surface_fraction
+f983,30.183979034423828,gpt__physicochemical.molecular_weight
+f986,30.06573486328125,gpt__physicochemical.h_bond_donors
+f984,27.063371658325195,gpt__physicochemical.logP_est
+f977,25.572858810424805,gpt__composition.hetero_atom_count
+f987,23.365873336791992,gpt__physicochemical.h_bond_acceptors
+f985,14.244162559509277,gpt__physicochemical.tpsa_est
+f1001,12.317319869995117,gpt__antimicrobial_relevant.cationic_centers
+f998,11.023626327514648,gpt__surface_properties.hydrophobic_surface_fraction
+f1006,9.849407196044922,gpt__antimicrobial_relevant.peptidomimetic_likeness

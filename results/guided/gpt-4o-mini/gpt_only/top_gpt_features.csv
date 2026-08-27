@@ -1,0 +1,11 @@
+feature,importance,feature_name
+f50,47.02068328857422,gpt__physicochemical.tpsa_est
+f52,46.115447998046875,gpt__physicochemical.h_bond_acceptors
+f73,31.99939727783203,gpt__functional_motifs.contains_quaternary_ammonium
+f45,29.82160758972168,gpt__rings.aromatic_ring_count
+f67,29.711584091186523,gpt__antimicrobial_relevant.anionic_centers
+f43,29.22597885131836,gpt__composition.formal_charge
+f72,27.42861557006836,gpt__functional_motifs.contains_primary_amine
+f44,26.98272132873535,gpt__rings.ring_count
+f51,26.25636863708496,gpt__physicochemical.h_bond_donors
+f48,24.337757110595703,gpt__physicochemical.molecular_weight

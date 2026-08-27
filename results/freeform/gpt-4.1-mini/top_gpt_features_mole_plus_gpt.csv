@@ -1,0 +1,11 @@
+feature,importance,feature_name
+f1006,453.28924560546875,gpt__heavy_atom_molecular_weight
+f1019,175.1180419921875,gpt__num_sulfonamide_groups
+f975,152.95172119140625,gpt__molecular_weight
+f1035,128.06016540527344,gpt__num_basic_oxygens
+f992,95.66268157958984,gpt__heteroatom_count
+f1032,68.46070861816406,gpt__num_hydrophilic_atoms
+f986,68.24161529541016,gpt__hydrogen_bond_acceptor_count
+f994,64.30875396728516,gpt__amide_bond_count
+f988,43.64012145996094,gpt__logp
+f1076,32.35784912109375,gpt__num_hydrophilic_rings

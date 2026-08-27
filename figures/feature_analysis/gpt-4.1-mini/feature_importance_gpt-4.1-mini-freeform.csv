@@ -1,0 +1,155 @@
+f_idx,importance,feature_name
+f83,559.4262084960938,gpt__num_nitro_groups
+f68,228.62989807128906,gpt__negative_charge_count
+f71,227.11273193359375,gpt__heavy_atom_molecular_weight
+f84,184.5653533935547,gpt__num_sulfonamide_groups
+f143,155.50375366210938,gpt__num_acidic_rings
+f107,120.82622528076172,gpt__num_ring_sulfurs
+f76,117.64747619628906,gpt__num_bridgehead_atoms
+f149,116.86540222167969,gpt__num_fused_aliphatic_rings
+f124,94.88191986083984,gpt__num_stereocenters
+f89,92.24671936035156,gpt__num_chiral_centers
+f40,78.80481719970703,gpt__molecular_weight
+f140,77.3683090209961,gpt__num_hydrophobic_rings
+f141,74.99083709716797,gpt__num_hydrophilic_rings
+f118,74.42411041259766,gpt__num_sulfur_hydrogen_bond_acceptors
+f146,72.85608673095703,gpt__num_fused_nonaromatic_rings
+f54,72.24556732177734,gpt__formal_charge
+f119,69.16822052001953,gpt__num_phosphorus_hydrogen_bond_acceptors
+f52,66.49951171875,gpt__topological_polar_surface_area
+f130,65.92426300048828,gpt__num_ionic_interactions_possible
+f93,62.09425735473633,gpt__num_lipinski_violations
+f67,59.852413177490234,gpt__positive_charge_count
+f57,59.500831604003906,gpt__heteroatom_count
+f60,55.96091079711914,gpt__ketone_count
+f72,54.288543701171875,gpt__num_heteroatoms
+f56,54.05571365356445,gpt__aromatic_ring_count
+f86,52.76084518432617,gpt__num_phenol_groups
+f96,52.17294692993164,gpt__num_hydrophobic_atoms
+f66,50.5097541809082,gpt__phosphorus_count
+f64,48.95989227294922,gpt__halogen_count
+f53,48.797359466552734,gpt__logp
+f88,47.88960647583008,gpt__num_halogenated_carbons
+f47,45.848724365234375,gpt__aromatic_atom_count
+f153,43.470314025878906,gpt__num_fused_aromatic_sulfurs
+f117,39.505027770996094,gpt__num_oxygen_hydrogen_bond_acceptors
+f136,39.0998420715332,gpt__num_nonaromatic_nitrogens
+f111,36.87069320678711,gpt__num_nonring_oxygens
+f92,36.507545471191406,gpt__num_pi_electrons
+f102,36.20267868041992,gpt__num_basic_heteroatoms
+f59,36.13362121582031,gpt__amide_bond_count
+f11,35.8966064453125,cat__bacterium_Bilophila wadsworthia (NT5036)
+f97,35.183719635009766,gpt__num_hydrophilic_atoms
+f51,34.90544509887695,gpt__hydrogen_bond_acceptor_count
+f74,34.88751220703125,gpt__num_fused_rings
+f142,34.79494094848633,gpt__num_basic_rings
+f115,34.51992416381836,gpt__num_oxygen_hydrogen_bond_donors
+f131,34.09589767456055,gpt__num_aromatic_nitrogens
+f65,34.03840255737305,gpt__sulfur_count
+f48,33.93680191040039,gpt__aromatic_bond_count
+f138,33.306697845458984,gpt__num_nonaromatic_carbons
+f44,32.947452545166016,gpt__nitrogen_count
+f87,32.49998092651367,gpt__num_alcohol_groups
+f148,32.405189514160156,gpt__num_fused_heteroaliphatic_rings
+f100,32.14644241333008,gpt__num_basic_oxygens
+f91,30.841100692749023,gpt__num_conjugated_double_bonds
+f82,30.825456619262695,gpt__num_amide_groups
+f135,30.732751846313477,gpt__num_aromatic_hydrogens
+f81,30.416419982910156,gpt__num_keto_groups
+f85,30.029743194580078,gpt__num_guanidine_groups
+f147,30.027563095092773,gpt__num_fused_heteroaromatic_rings
+f112,29.02834129333496,gpt__num_nonring_carbons
+f116,28.90480613708496,gpt__num_nitrogen_hydrogen_bond_acceptors
+f104,28.723690032958984,gpt__num_neutral_heteroatoms
+f144,27.956064224243164,gpt__num_neutral_rings
+f43,27.069570541381836,gpt__carbon_count
+f126,26.606908798217773,gpt__num_polar_hydrogens
+f78,26.50948715209961,gpt__num_amine_groups
+f25,26.174236297607422,cat__bacterium_Eubacterium rectale (NT5009)
+f98,26.115753173828125,gpt__num_basic_nitrogens
+f42,26.08909797668457,gpt__atom_count
+f132,25.84866714477539,gpt__num_aromatic_oxygens
+f134,25.84105682373047,gpt__num_aromatic_carbons
+f49,25.59421157836914,gpt__rotatable_bond_count
+f123,25.572853088378906,gpt__num_triple_bonds
+f70,25.261613845825195,gpt__fraction_csp3
+f108,25.199716567993164,gpt__num_ring_carbons
+f50,25.139677047729492,gpt__hydrogen_bond_donor_count
+f109,24.983671188354492,gpt__num_ring_hydrogens
+f45,24.77105140686035,gpt__oxygen_count
+f69,24.756649017333984,gpt__molar_refractivity
+f58,24.731962203979492,gpt__heterocycle_count
+f99,24.65517807006836,gpt__num_acidic_oxygens
+f128,24.064802169799805,gpt__num_heteroatom_hydrogens
+f62,23.75996208190918,gpt__ester_count
+f7,23.676773071289062,cat__bacterium_Bacteroides vulgatus (NT5001)
+f152,23.601139068603516,gpt__num_fused_aromatic_oxygens
+f22,23.557676315307617,cat__bacterium_Escherichia coli ED1a (NT5078)
+f0,23.509389877319336,cat__bacterium_Akkermansia muciniphila (NT5021)
+f150,23.496212005615234,gpt__num_fused_aromatic_carbons
+f80,23.385774612426758,gpt__num_pyrimidine_like_rings
+f24,23.195371627807617,cat__bacterium_Eubacterium eligens (NT5075)
+f23,22.94321060180664,cat__bacterium_Escherichia coli IAI1 (NT5077)
+f151,22.780406951904297,gpt__num_fused_aromatic_nitrogens
+f133,22.554519653320312,gpt__num_aromatic_sulfurs
+f110,22.510892868041992,gpt__num_nonring_nitrogens
+f26,22.126985549926758,cat__bacterium_Fusobacterium nucleatum (NT5025)
+f41,22.057512283325195,gpt__heavy_atom_count
+f63,21.868743896484375,gpt__ether_count
+f129,21.205848693847656,gpt__num_non_heteroatom_hydrogens
+f12,21.08995246887207,cat__bacterium_Blautia obeum (NT5069)
+f77,21.037282943725586,gpt__num_tautomers_possible
+f46,20.848424911499023,gpt__hydrogen_count
+f120,20.572200775146484,gpt__num_pi_bonds
+f121,20.55743980407715,gpt__num_sigma_bonds
+f127,20.532997131347656,gpt__num_nonpolar_hydrogens
+f122,20.462554931640625,gpt__num_double_bonds
+f114,20.431428909301758,gpt__num_nitrogen_hydrogen_bond_donors
+f55,20.429519653320312,gpt__ring_count
+f113,19.972522735595703,gpt__num_nonring_hydrogens
+f75,19.961780548095703,gpt__num_spiro_rings
+f125,19.934160232543945,gpt__num_tautomers
+f145,19.878217697143555,gpt__num_fused_aromatic_rings
+f90,19.744266510009766,gpt__num_exocyclic_double_bonds
+f105,18.466842651367188,gpt__num_ring_nitrogens
+f137,18.299558639526367,gpt__num_nonaromatic_oxygens
+f106,18.13612937927246,gpt__num_ring_oxygens
+f139,18.014312744140625,gpt__num_nonaromatic_hydrogens
+f33,17.835723876953125,cat__bacterium_Roseburia intestinalis (NT5011)
+f6,17.74370765686035,cat__bacterium_Bacteroides uniformis (NT5002)
+f8,17.67741584777832,cat__bacterium_Bacteroides xylanisolvens (NT5064)
+f18,17.67059898376465,cat__bacterium_Collinsella aerofaciens (NT5073)
+f95,17.62903594970703,gpt__num_rotatable_bonds
+f36,16.6158504486084,cat__bacterium_Ruminococcus torques (NT5047)
+f1,16.148483276367188,cat__bacterium_Bacteroides caccae (NT5050)
+f5,16.096935272216797,cat__bacterium_Bacteroides thetaiotaomicron (NT5004)
+f32,15.497533798217773,cat__bacterium_Roseburia hominis (NT5079)
+f28,15.059463500976562,cat__bacterium_Odoribacter splanchnicus (NT5081)
+f73,14.985119819641113,gpt__num_heteroaromatic_rings
+f79,14.952539443969727,gpt__num_imidazole_like_rings
+f29,14.7831392288208,cat__bacterium_Parabacteroides distasonis (NT5074)
+f10,14.335525512695312,cat__bacterium_Bifidobacterium longum (NT5028)
+f37,14.289113998413086,cat__bacterium_Streptococcus parasanguinis (NT5072)
+f13,14.203374862670898,cat__bacterium_Clostridium bolteae (NT5026)
+f15,14.06856918334961,cat__bacterium_Clostridium perfringens (NT5032)
+f34,13.919576644897461,cat__bacterium_Ruminococcus bromii (NT5045)
+f14,13.681008338928223,cat__bacterium_Clostridium difficile (NT5083)
+f4,13.67646312713623,cat__bacterium_Bacteroides ovatus (NT5054)
+f39,13.583548545837402,cat__bacterium_Veillonella parvula (NT5017)
+f27,13.456182479858398,cat__bacterium_Lactobacillus paracasei (NT5042)
+f61,13.305473327636719,gpt__carboxylic_acid_count
+f31,13.224888801574707,cat__bacterium_Prevotella copri (NT5019)
+f103,13.223672866821289,gpt__num_acidic_heteroatoms
+f16,12.857444763183594,cat__bacterium_Clostridium ramosum (NT5006)
+f17,12.449719429016113,cat__bacterium_Clostridium saccharolyticum (NT5037)
+f30,11.993939399719238,cat__bacterium_Parabacteroides merdae (NT5071)
+f101,11.705792427062988,gpt__num_basic_sulfurs
+f9,11.606836318969727,cat__bacterium_Bifidobacterium adolescentis (NT5022)
+f21,11.52404499053955,cat__bacterium_Eggerthella lenta (NT5024)
+f35,11.226683616638184,cat__bacterium_Ruminococcus gnavus (NT5046)
+f38,9.73624324798584,cat__bacterium_Streptococcus salivarius (NT5038)
+f2,8.835891723632812,cat__bacterium_Bacteroides fragilis (ET) (NT5033)
+f19,7.055758476257324,cat__bacterium_Coprococcus comes (NT5048)
+f3,6.844082355499268,cat__bacterium_Bacteroides fragilis (NT) (NT5003)
+f20,6.435506343841553,cat__bacterium_Dorea formicigenerans (NT5076)
+f94,6.396758079528809,gpt__num_ro5_violations

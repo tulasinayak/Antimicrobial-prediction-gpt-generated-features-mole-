@@ -1,0 +1,252 @@
+f_idx,importance,feature_name
+f84,382.93499755859375,gpt__heteroatom_count
+f163,340.8930358886719,gpt__solubility_class_est
+f173,296.7838439941406,gpt__cyp_inhibition_risk_est
+f68,215.09120178222656,gpt__bond_count_n_o
+f241,186.0363006591797,gpt__desolvation_penalty_est
+f58,161.62596130371094,gpt__formal_charge_negative
+f195,71.75740814208984,gpt__efflux_pump_substrate_likelihood_est
+f134,71.12165832519531,gpt__ring_strain_est
+f209,68.89813995361328,gpt__chemical_stability_score_est
+f205,66.55345916748047,gpt__mutagenicity_ames_risk_est
+f97,62.17491149902344,gpt__hbond_acceptor_sites_carbonyl_o
+f206,52.708099365234375,gpt__hERG_risk_est
+f106,51.26067352294922,gpt__logp_xlogp3_est
+f52,50.3511962890625,gpt__molecular_weight
+f171,46.03952407836914,gpt__plasma_protein_binding_fraction_est
+f204,45.81626510620117,gpt__off_target_human_nucleobase_binding_risk_est
+f48,45.43088150024414,gpt__element_count_f
+f211,45.172794342041016,gpt__photostability_risk_est
+f184,45.064205169677734,gpt__nucleoside_mimic_potential
+f182,42.346405029296875,gpt__purine_like_score_est
+f229,42.28166580200195,gpt__heteroatom_density
+f189,41.049339294433594,gpt__kinase_like_binding_potential_est
+f143,40.66250228881836,gpt__acidic_site_count
+f192,35.518890380859375,gpt__ribosomal_binding_likelihood_est
+f248,35.24515914916992,gpt__nucleobase_antimetabolite_potential_est
+f166,35.2337760925293,gpt__efflux_susceptibility_score_est
+f213,34.65717315673828,gpt__reduction_liability_est
+f112,33.728294372558594,gpt__sp3_atom_count
+f78,33.15863800048828,gpt__largest_ring_size
+f174,32.882415771484375,gpt__reactive_functionality_alert_count
+f193,32.629451751708984,gpt__cell_wall_target_likelihood_est
+f175,32.349544525146484,gpt__aggregator_likelihood_est
+f85,32.32210159301758,gpt__heteroatom_fraction
+f86,29.340667724609375,gpt__heavy_atom_fraction_hetero
+f157,29.084043502807617,gpt__hydrogen_count_exchangeable_est
+f75,28.859357833862305,gpt__ring_count_aliphatic
+f223,28.474853515625,gpt__scaffold_carbonyl_count
+f162,27.925498962402344,gpt__solubility_aq_logS_est
+f246,27.785390853881836,gpt__antimicrobial_like_score_est
+f98,27.722681045532227,gpt__hbond_acceptor_sites_exocyclic_amine_n
+f180,27.64876365661621,gpt__hbond_networking_score_est
+f82,26.929658889770508,gpt__aromatic_atom_count
+f177,26.603599548339844,gpt__metal_chelation_score_est
+f185,26.488021850585938,gpt__dna_rna_binding_intercalation_score_est
+f232,26.171844482421875,gpt__tpsa_per_heavy_atom
+f93,25.98213005065918,gpt__hbond_acceptor_count
+f141,25.893903732299805,gpt__ionizable_group_count
+f54,25.750303268432617,gpt__average_atomic_number
+f122,24.810779571533203,gpt__planarity_score_est
+f111,24.377721786499023,gpt__fraction_csp3
+f214,24.30893898010254,gpt__protonation_microstate_count_est
+f49,23.937673568725586,gpt__element_count_cl
+f146,22.664867401123047,gpt__strong_acidic_site_count
+f121,21.725549697875977,gpt__conjugated_system_size_est
+f67,21.659809112548828,gpt__bond_count_carbonyl
+f207,21.319395065307617,gpt__hepatotoxicity_risk_est
+f71,21.10369873046875,gpt__bond_count_c_o
+f247,20.86257553100586,gpt__antimetabolite_like_score_est
+f201,20.738237380981445,gpt__mycobacteria_uptake_score_est
+f176,20.665401458740234,gpt__redox_activity_score_est
+f160,20.52661895751953,gpt__dipole_moment_est
+f153,20.49941062927246,gpt__net_charge_ph5_5_est
+f108,20.425010681152344,gpt__hydrogen_bonding_capacity_index
+f105,20.252145767211914,gpt__molar_refractivity_est
+f142,20.24383544921875,gpt__basic_site_count
+f11,20.00612449645996,cat__bacterium_Bilophila wadsworthia (NT5036)
+f62,19.97798728942871,gpt__bond_count_aromatic
+f168,19.496002197265625,gpt__gram_negative_uptake_score_est
+f227,19.491090774536133,gpt__nitrogen_density
+f123,19.027000427246094,gpt__shape_index_est
+f243,18.994054794311523,gpt__fragment_like_score_est
+f228,18.886573791503906,gpt__oxygen_density
+f245,18.786985397338867,gpt__drug_like_score_est
+f45,18.566043853759766,gpt__element_count_o
+f240,18.558753967285156,gpt__water_structuring_score_est
+f235,18.475317001342773,gpt__aromaticity_index
+f169,18.41226577758789,gpt__gram_positive_uptake_score_est
+f137,18.411436080932617,gpt__keto_enol_tautomer_possible
+f70,18.35095977783203,gpt__bond_count_c_n
+f60,18.206703186035156,gpt__bond_count_single
+f127,18.154415130615234,gpt__kappa3_est
+f178,18.09186553955078,gpt__iron_chelation_score_est
+f74,17.83245849609375,gpt__ring_count_aromatic
+f147,17.66855239868164,gpt__weak_acidic_site_count
+f113,17.471160888671875,gpt__sp2_atom_count
+f188,17.36161994934082,gpt__enzyme_active_site_mimicry_score_est
+f234,17.35848617553711,gpt__logp_per_carbon_est
+f92,17.070531845092773,gpt__hbond_donor_count
+f194,16.98061752319336,gpt__membrane_disruption_likelihood_est
+f165,16.972835540771484,gpt__membrane_permeation_score_est
+f91,16.911466598510742,gpt__tpsa_oxygen_contrib
+f83,16.857149124145508,gpt__fraction_aromatic_atoms
+f107,16.768144607543945,gpt__logd7_4_est
+f65,16.515775680541992,gpt__bond_count_urea
+f216,16.390140533447266,gpt__intramolecular_hbond_possible
+f61,16.129018783569336,gpt__bond_count_double
+f152,16.065380096435547,gpt__net_charge_ph7_4_est
+f155,15.920465469360352,gpt__zwitterion_possible
+f242,15.705535888671875,gpt__binding_site_hbonding_advantage_est
+f154,15.654438972473145,gpt__net_charge_ph2_est
+f56,15.626337051391602,gpt__formal_charge_total
+f198,15.519264221191406,gpt__outer_membrane_penetration_score_est
+f90,15.341485023498535,gpt__tpsa_nitrogen_contrib
+f226,15.337514877319336,gpt__heteroaromatic_richness_score
+f203,15.239768981933594,gpt__target_conservation_score_est
+f119,15.200505256652832,gpt__largest_fused_system_ring_count
+f47,15.182825088500977,gpt__element_count_p
+f53,15.078049659729004,gpt__exact_mass_est
+f225,15.057015419006348,gpt__scaffold_total_hetero_in_rings
+f179,15.00316047668457,gpt__zinc_binding_score_est
+f197,14.833334922790527,gpt__intracellular_target_access_score_est
+f23,14.826950073242188,cat__bacterium_Escherichia coli IAI1 (NT5077)
+f181,14.826213836669922,gpt__nucleobase_like_score_est
+f244,14.824307441711426,gpt__lead_like_score_est
+f96,14.767170906066895,gpt__hbond_acceptor_sites_ring_n
+f89,14.74435806274414,gpt__topological_polar_surface_area
+f77,14.521627426147461,gpt__ring_count_bridgehead
+f22,14.375080108642578,cat__bacterium_Escherichia coli ED1a (NT5078)
+f150,14.256396293640137,gpt__pka_acidic_min_est
+f239,14.138607025146484,gpt__pi_stacking_potential_est
+f222,13.943732261657715,gpt__scaffold_exocyclic_amine_count
+f126,13.83011245727539,gpt__kappa2_est
+f190,13.739174842834473,gpt__folate_pathway_mimicry_score_est
+f109,13.735852241516113,gpt__polar_fraction_est
+f132,13.722023963928223,gpt__fragment_complexity_est
+f130,13.711508750915527,gpt__balaban_j_est
+f172,13.569397926330566,gpt__metabolic_stability_score_est
+f145,13.49582290649414,gpt__weak_basic_site_count
+f159,13.424517631530762,gpt__hbond_acceptor_strength_avg_est
+f57,13.418566703796387,gpt__formal_charge_positive
+f217,13.275116920471191,gpt__intramolecular_hbond_count_max
+f94,13.251204490661621,gpt__hbond_donor_sites_primary_amine
+f118,13.237961769104004,gpt__ring_system_count
+f44,13.228879928588867,gpt__element_count_n
+f117,13.154730796813965,gpt__fused_ring_system_count
+f69,13.018815994262695,gpt__bond_count_n_n
+f135,12.856656074523926,gpt__tautomer_count_est
+f110,12.82640266418457,gpt__apolar_fraction_est
+f220,12.798900604248047,gpt__flexibility_score_est
+f26,12.617895126342773,cat__bacterium_Fusobacterium nucleatum (NT5025)
+f55,12.408426284790039,gpt__valence_electron_count
+f0,12.282981872558594,cat__bacterium_Akkermansia muciniphila (NT5021)
+f73,12.277606010437012,gpt__ring_count_total
+f64,12.192440032958984,gpt__bond_count_amide
+f231,12.136006355285645,gpt__hbond_acceptor_density
+f149,12.126471519470215,gpt__pka_basic_min_est
+f88,12.054790496826172,gpt__rigid_bond_count_est
+f12,12.032674789428711,cat__bacterium_Blautia obeum (NT5069)
+f230,11.756815910339355,gpt__hbond_donor_density
+f183,11.755555152893066,gpt__pyrimidinone_like_score_est
+f237,11.728463172912598,gpt__nucleophilicity_index_est
+f208,11.725361824035645,gpt__renal_clearance_risk_est
+f218,11.658729553222656,gpt__intramolecular_hbond_score
+f116,11.535554885864258,gpt__aromatic_ring_count_6_membered
+f80,11.457919120788574,gpt__ring_atom_count
+f25,11.438779830932617,cat__bacterium_Eubacterium rectale (NT5009)
+f202,11.437521934509277,gpt__resistance_mutation_liability_score_est
+f79,11.401015281677246,gpt__smallest_ring_size
+f87,11.394159317016602,gpt__rotatable_bond_count
+f224,11.193845748901367,gpt__scaffold_nh_in_ring_count
+f81,11.138629913330078,gpt__fraction_atoms_in_rings
+f156,11.08709716796875,gpt__isoelectric_point_est
+f191,11.049284934997559,gpt__nucleotide_biosynthesis_target_likelihood_est
+f8,10.966938972473145,cat__bacterium_Bacteroides xylanisolvens (NT5064)
+f249,10.694025039672852,gpt__transport_via_nucleobase_transporters_score_est
+f51,10.689201354980469,gpt__element_count_i
+f148,10.668774604797363,gpt__pka_basic_max_est
+f233,10.665457725524902,gpt__mw_per_heavy_atom
+f99,10.449145317077637,gpt__hbond_acceptor_count_total_est
+f43,10.446613311767578,gpt__element_count_c
+f120,10.443893432617188,gpt__pi_electron_count_est
+f95,10.338475227355957,gpt__hbond_donor_sites_ring_nh
+f161,10.325418472290039,gpt__dielectric_interaction_potential_est
+f215,10.247147560119629,gpt__microstate_entropy_est
+f167,10.020650863647461,gpt__porin_passage_score_est
+f7,9.831266403198242,cat__bacterium_Bacteroides vulgatus (NT5001)
+f131,9.823464393615723,gpt__bertz_ct_est
+f42,9.799756050109863,gpt__atom_count_hydrogen
+f46,9.787012100219727,gpt__element_count_s
+f13,9.757673263549805,cat__bacterium_Clostridium bolteae (NT5026)
+f138,9.731295585632324,gpt__lactam_lactim_tautomer_possible
+f72,9.668291091918945,gpt__bond_count_c_c
+f124,9.630034446716309,gpt__asphericity_est
+f128,9.461012840270996,gpt__wiener_index_est
+f187,9.371600151062012,gpt__rna_binding_score_est
+f250,9.346653938293457,gpt__prodrug_feasibility_score_est
+f151,9.318192481994629,gpt__pka_acidic_max_est
+f133,9.147866249084473,gpt__synthetic_accessibility_est
+f196,8.981622695922852,gpt__biofilm_penetration_score_est
+f238,8.906678199768066,gpt__ring_current_susceptibility_est
+f36,8.807637214660645,cat__bacterium_Ruminococcus torques (NT5047)
+f236,8.75792121887207,gpt__electrophilicity_index_est
+f139,8.727889060974121,gpt__amino_imino_tautomer_possible
+f210,8.718008041381836,gpt__hydrolysis_liability_est
+f200,8.715295791625977,gpt__pseudomonas_uptake_score_est
+f100,8.562675476074219,gpt__hbond_donor_count_total_est
+f199,8.493968963623047,gpt__peptidoglycan_penetration_score_est
+f102,8.436445236206055,gpt__ghose_violations_est
+f16,8.422548294067383,cat__bacterium_Clostridium ramosum (NT5006)
+f212,8.349295616149902,gpt__oxidation_liability_est
+f76,8.316649436950684,gpt__ring_count_fused
+f5,8.261515617370605,cat__bacterium_Bacteroides thetaiotaomicron (NT5004)
+f129,8.258877754211426,gpt__zagreb_index_est
+f18,8.25133991241455,cat__bacterium_Collinsella aerofaciens (NT5073)
+f59,8.194009780883789,gpt__bond_count_total
+f115,8.134421348571777,gpt__aromatic_ring_count_5_membered
+f21,8.082221031188965,cat__bacterium_Eggerthella lenta (NT5024)
+f50,8.027207374572754,gpt__element_count_br
+f144,7.971500396728516,gpt__strong_basic_site_count
+f37,7.916251182556152,cat__bacterium_Streptococcus parasanguinis (NT5072)
+f219,7.903539180755615,gpt__steric_bulk_score_est
+f39,7.7808837890625,cat__bacterium_Veillonella parvula (NT5017)
+f27,7.737107276916504,cat__bacterium_Lactobacillus paracasei (NT5042)
+f33,7.733708381652832,cat__bacterium_Roseburia intestinalis (NT5011)
+f221,7.607331275939941,gpt__scaffold_ring_nitrogen_count
+f34,7.553610801696777,cat__bacterium_Ruminococcus bromii (NT5045)
+f6,7.542898178100586,cat__bacterium_Bacteroides uniformis (NT5002)
+f40,7.4869537353515625,gpt__atom_count_total
+f101,7.202451229095459,gpt__lipinski_rule_of_5_violations
+f9,7.152282238006592,cat__bacterium_Bifidobacterium adolescentis (NT5022)
+f1,7.057447910308838,cat__bacterium_Bacteroides caccae (NT5050)
+f186,6.8678460121154785,gpt__dna_minor_groove_binding_score_est
+f24,6.8170270919799805,cat__bacterium_Eubacterium eligens (NT5075)
+f170,6.722149848937988,gpt__bioavailability_score_est
+f29,6.658328533172607,cat__bacterium_Parabacteroides distasonis (NT5074)
+f15,6.603341102600098,cat__bacterium_Clostridium perfringens (NT5032)
+f158,6.4535908699035645,gpt__hbond_donor_strength_avg_est
+f125,6.42870569229126,gpt__kappa1_est
+f4,6.341253757476807,cat__bacterium_Bacteroides ovatus (NT5054)
+f10,6.33514928817749,cat__bacterium_Bifidobacterium longum (NT5028)
+f14,6.332180023193359,cat__bacterium_Clostridium difficile (NT5083)
+f136,6.261475086212158,gpt__tautomerizability_score
+f140,6.084530830383301,gpt__prototropic_tautomer_possible
+f104,6.032140254974365,gpt__egan_violations_est
+f17,5.861283302307129,cat__bacterium_Clostridium saccharolyticum (NT5037)
+f31,5.855751991271973,cat__bacterium_Prevotella copri (NT5019)
+f41,5.769165992736816,gpt__atom_count_heavy
+f32,5.679706573486328,cat__bacterium_Roseburia hominis (NT5079)
+f38,5.6787285804748535,cat__bacterium_Streptococcus salivarius (NT5038)
+f63,5.654864311218262,gpt__bond_count_triple
+f28,5.550802707672119,cat__bacterium_Odoribacter splanchnicus (NT5081)
+f2,5.482213973999023,cat__bacterium_Bacteroides fragilis (ET) (NT5033)
+f35,5.372830390930176,cat__bacterium_Ruminococcus gnavus (NT5046)
+f30,5.105716705322266,cat__bacterium_Parabacteroides merdae (NT5071)
+f66,4.99870491027832,gpt__bond_count_imide
+f19,4.770133018493652,cat__bacterium_Coprococcus comes (NT5048)
+f164,4.232570648193359,gpt__permeability_caco2_logpapp_est
+f3,4.02648401260376,cat__bacterium_Bacteroides fragilis (NT) (NT5003)
+f20,3.862977981567383,cat__bacterium_Dorea formicigenerans (NT5076)
+f103,2.878432035446167,gpt__veber_violations
+f114,1.5495939254760742,gpt__sp_atom_count

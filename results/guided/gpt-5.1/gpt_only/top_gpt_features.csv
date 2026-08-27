@@ -1,0 +1,11 @@
+feature,importance,feature_name
+f68,37.00861740112305,gpt__antimicrobial_relevant.anionic_centers
+f53,30.06378173828125,gpt__physicochemical.h_bond_acceptors
+f79,21.08230209350586,gpt__safety_flags.structural_alerts.count
+f76,17.978654861450195,gpt__functional_motifs.contains_phenolic_group
+f45,17.719257354736328,gpt__rings.aromatic_ring_count
+f78,16.37616729736328,gpt__safety_flags.potentially_reactive_motifs.count
+f69,16.316390991210938,gpt__antimicrobial_relevant.aromaticity_fraction
+f75,15.788553237915039,gpt__functional_motifs.contains_guanidinium
+f51,15.009191513061523,gpt__physicochemical.tpsa_est
+f63,13.645503997802734,gpt__surface_properties.polar_surface_fraction

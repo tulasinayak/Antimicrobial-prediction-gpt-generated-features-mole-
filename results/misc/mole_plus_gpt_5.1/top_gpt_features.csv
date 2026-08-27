@@ -1,0 +1,11 @@
+feature,importance,feature_name
+f977,167.12326049804688,gpt__composition.hetero_atom_count
+f1013,33.398216247558594,gpt__safety_flags.potentially_reactive_motifs.count
+f984,18.220746994018555,gpt__physicochemical.molecular_weight
+f985,16.75725746154785,gpt__physicochemical.logP_est
+f988,12.713214874267578,gpt__physicochemical.h_bond_acceptors
+f1011,9.974282264709473,gpt__functional_motifs.contains_phenolic_group
+f986,8.811423301696777,gpt__physicochemical.tpsa_est
+f1007,8.266791343688965,gpt__antimicrobial_relevant.peptidomimetic_likeness
+f995,7.401871681213379,gpt__topological_descriptors.kappa_1
+f981,6.881852626800537,gpt__rings.fused_system_count

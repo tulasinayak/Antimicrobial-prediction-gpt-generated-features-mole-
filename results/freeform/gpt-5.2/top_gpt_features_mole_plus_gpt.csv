@@ -1,0 +1,11 @@
+feature,importance,feature_name
+f1019,336.6919250488281,gpt__heteroatom_count
+f1176,204.134521484375,gpt__desolvation_penalty_est
+f1108,185.93138122558594,gpt__cyp_inhibition_risk_est
+f1098,175.36453247070312,gpt__solubility_class_est
+f1084,134.76416015625,gpt__pka_basic_min_est
+f988,133.37939453125,gpt__exact_mass_est
+f1051,89.89404296875,gpt__aromatic_ring_count_6_membered
+f1119,86.84896087646484,gpt__nucleoside_mimic_potential
+f1106,83.08305358886719,gpt__plasma_protein_binding_fraction_est
+f1041,82.04842376708984,gpt__logp_xlogp3_est

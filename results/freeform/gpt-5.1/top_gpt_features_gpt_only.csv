@@ -1,0 +1,11 @@
+feature,importance,feature_name
+f335,898.3753051757812,gpt__metal_binding_site_count_soft
+f504,646.9971313476562,gpt__toxicity_reactive_metabolite_risk_index
+f75,442.6124267578125,gpt__heteroatom_count
+f495,437.51165771484375,gpt__toxicity_idiosyncratic_risk_index
+f338,362.86468505859375,gpt__chelation_potential_index
+f379,316.85943603515625,gpt__clearance_hepatic_high_low_index
+f114,290.21820068359375,gpt__num_n_oxide_like
+f322,280.4658203125,gpt__intramolecular_hbond_likelihood
+f74,179.73748779296875,gpt__o_formal_charge_negative
+f315,167.52943420410156,gpt__fragment_eligibility_index

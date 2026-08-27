@@ -1,0 +1,11 @@
+feature,importance,feature_name
+f58,35.01087951660156,gpt__polar_surface_area
+f55,34.69603729248047,gpt__num_bromine_atoms
+f56,22.30307388305664,gpt__num_iodine_atoms
+f47,19.760602951049805,gpt__num_aromatic_rings
+f54,17.455596923828125,gpt__num_chlorine_atoms
+f57,15.924561500549316,gpt__log_p
+f52,15.534886360168457,gpt__num_sulfur_atoms
+f49,12.945785522460938,gpt__num_nitrogens
+f44,12.21961498260498,gpt__num_hydrogen_bond_donors
+f78,12.064850807189941,gpt__input

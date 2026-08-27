@@ -1,0 +1,11 @@
+feature,importance,feature_name
+f977,571.1226806640625,gpt__composition.hetero_atom_count
+f988,455.9311828613281,gpt__physicochemical.h_bond_acceptors
+f1008,109.605224609375,gpt__functional_motifs.contains_primary_amine
+f980,80.59345245361328,gpt__rings.aromatic_ring_count
+f984,68.91294860839844,gpt__physicochemical.molecular_weight
+f1014,61.159912109375,gpt__safety_flags.structural_alerts.count
+f1006,41.13374710083008,gpt__antimicrobial_relevant.membrane_interaction_potential
+f985,28.94547462463379,gpt__physicochemical.logP_est
+f1007,28.532161712646484,gpt__antimicrobial_relevant.peptidomimetic_likeness
+f999,28.463062286376953,gpt__surface_properties.hydrophobic_surface_fraction

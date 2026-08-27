@@ -1,0 +1,11 @@
+feature,importance,feature_name
+f84,426.8372497558594,gpt__heteroatom_count
+f241,329.23394775390625,gpt__desolvation_penalty_est
+f173,296.4161682128906,gpt__cyp_inhibition_risk_est
+f163,284.7701721191406,gpt__solubility_class_est
+f58,211.82044982910156,gpt__formal_charge_negative
+f77,112.81692504882812,gpt__ring_count_bridgehead
+f209,101.53012084960938,gpt__chemical_stability_score_est
+f68,101.07492065429688,gpt__bond_count_n_o
+f75,95.75263214111328,gpt__ring_count_aliphatic
+f207,85.79854583740234,gpt__hepatotoxicity_risk_est

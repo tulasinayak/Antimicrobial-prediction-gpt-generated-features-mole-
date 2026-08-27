@@ -1,0 +1,11 @@
+feature,importance,feature_name
+f987,219.39596557617188,gpt__MolWt
+f1112,154.38926696777344,gpt__synthetic_accessibility_score_est
+f1006,133.76197814941406,gpt__NumSaturatedCarbocycles
+f1045,126.582763671875,gpt__PEOE_VSA1
+f1109,119.47783660888672,gpt__aromaticity_fraction
+f988,107.36280822753906,gpt__ExactMolWt
+f1069,86.08057403564453,gpt__SlogP_VSA1
+f1095,71.86898803710938,gpt__fr_sulfonamide
+f1082,64.73966217041016,gpt__fr_Ar_OH
+f995,31.90997314453125,gpt__MolLogP
