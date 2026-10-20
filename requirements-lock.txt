@@ -1,0 +1,33 @@
+# Exact versions of the environment that produced the reported results.
+#
+# The repository's requirements.txt specifies lower bounds only (numpy>=1.24,
+# xgboost>=2.0, ...), so a fresh install resolves to whatever is current and the
+# numbers drift. These pins are what `scripts/run_table1.py` and the analysis
+# scripts were actually run with; use them to reproduce the tables exactly.
+#
+# Captured from the run environment with importlib on 2026-10-19.
+
+# --- core numerics ---
+numpy==2.4.4
+pandas==3.0.2
+scipy==1.17.1
+
+# --- modelling ---
+scikit-learn==1.8.0
+xgboost==3.2.0
+joblib==1.5.3
+
+# --- chemistry ---
+# Official PyPI wheels; no conda required.
+rdkit==2025.9.6
+
+# --- I/O ---
+openpyxl==3.1.5
+
+# --- plotting (analysis notebooks only; not needed to reproduce the tables) ---
+matplotlib==3.11.1
+
+# --- GPT feature generation only (not needed to reproduce the tables) ---
+# openai
+# requests
+# tqdm

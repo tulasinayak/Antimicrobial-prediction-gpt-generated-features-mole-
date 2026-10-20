@@ -1,0 +1,7 @@
+model,n_features_strict,n_features_lenient,frac_unique_strict,frac_unique_lenient
+gpt-4.1,196,190,0.7347,0.6895
+gpt-4.1-mini,123,122,0.626,0.623
+gpt-4o,266,266,0.9211,0.9135
+gpt-4o-mini,38,37,0.6316,0.5405
+gpt-5.1,508,502,0.9449,0.9203
+gpt-5.2,218,217,0.9174,0.8618

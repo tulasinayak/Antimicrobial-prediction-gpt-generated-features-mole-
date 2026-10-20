@@ -556,6 +556,9 @@ def train_xgb(joined: pd.DataFrame, params: dict, random_state: int = 42):
     params = params.copy()
     params["scale_pos_weight"] = (1 - pos_rate) / pos_rate
     params["max_delta_step"] = 1
+    # Without this the random_state argument never reaches XGBoost, so every
+    # "seed" refits the identical model and any spread across seeds is zero.
+    params["seed"] = int(random_state)
 
     dtr  = xgb.DMatrix(X_tr,  label=y_tr)
     dval = xgb.DMatrix(X_val, label=y_val)
@@ -801,6 +804,18 @@ def parse_args():
     ap.add_argument("--pval_cutoff", type=float, default=0.05, help="P-value cutoff for labels.")
     ap.add_argument("--output_dir", required=True, help="Directory to write outputs.")
     ap.add_argument("--random_state", type=int, default=42, help="Random state.")
+    ap.add_argument("--skip_intermediate_dumps", action="store_true",
+                    help="Do not write the large regenerable intermediates "
+                         "(compound_features_combined_*.csv and "
+                         "compound_strain_pairs_with_features_*.csv). These are gitignored and "
+                         "run to hundreds of MB each; skipping them saves disk and I/O time.")
+    ap.add_argument("--test_seeds", default=None,
+                    help="Comma-separated training seeds to refit the selected hyperparameter "
+                         "configuration with, e.g. '0,1,2,3,4'. Each seed is evaluated on the "
+                         "held-out test set and the spread is written to "
+                         "seed_metrics_<feature_mode>.csv. The first seed supplies the saved "
+                         "model, predictions and importances. Defaults to --random_state alone, "
+                         "which reproduces the original single-run behaviour.")
 
     # CHANGE: expanded feature modes
     ap.add_argument(
@@ -935,9 +950,12 @@ def main():
 
     print(f" - Combined features: {combined.shape}")
 
-    combined_out = os.path.join(args.output_dir, f"compound_features_combined_{args.feature_mode}.csv")
-    combined.reset_index().to_csv(combined_out, index=False)
-    print(f" - Saved: {combined_out}")
+    if args.skip_intermediate_dumps:
+        print(" - Skipping compound_features_combined dump (--skip_intermediate_dumps).")
+    else:
+        combined_out = os.path.join(args.output_dir, f"compound_features_combined_{args.feature_mode}.csv")
+        combined.reset_index().to_csv(combined_out, index=False)
+        print(f" - Saved: {combined_out}")
 
     print("[4] Merging pairs with features.")
     joined = build_pairs_with_features(pairs, combined)
@@ -1040,9 +1058,12 @@ def main():
         print("Dropping constant feature columns:", const)
         joined = joined.drop(columns=const)
 
-    pairs_feats_csv = os.path.join(args.output_dir, f"compound_strain_pairs_with_features_{args.feature_mode}.csv")
-    joined.to_csv(pairs_feats_csv, index=False)
-    print(f" - Saved: {pairs_feats_csv}")
+    if args.skip_intermediate_dumps:
+        print(" - Skipping compound_strain_pairs_with_features dump (--skip_intermediate_dumps).")
+    else:
+        pairs_feats_csv = os.path.join(args.output_dir, f"compound_strain_pairs_with_features_{args.feature_mode}.csv")
+        joined.to_csv(pairs_feats_csv, index=False)
+        print(f" - Saved: {pairs_feats_csv}")
 
     print("[6] Hyperparameter search + training with exact split.")
 
@@ -1080,18 +1101,67 @@ def main():
     print(f"[BEST] Validation macro-AUPRC: {best_val:.4f}")
     print(f"[BEST] Params: {best_params}")
 
-    model, summary, preds, per_strain, dte, y_te, feature_debug = train_xgb(
-        joined,
-        params=best_params,
-        random_state=args.random_state,
-    )
+    # Refit the selected configuration once per test seed.  The first seed supplies
+    # the artifacts saved below, so a single seed reproduces the original behaviour.
+    if args.test_seeds:
+        test_seeds = [int(s) for s in str(args.test_seeds).split(",") if str(s).strip() != ""]
+    else:
+        test_seeds = [args.random_state]
+
+    seed_rows = []
+    model = summary = preds = per_strain = dte = y_te = feature_debug = None
+
+    for i, seed in enumerate(test_seeds):
+        print(f"\n[FINAL] Refit {i+1}/{len(test_seeds)} with training seed {seed}")
+        out = train_xgb(joined, params=best_params, random_state=seed)
+
+        seed_summary = out[1]
+        seed_rows.append({"seed": seed, **seed_summary})
+
+        seed_json = os.path.join(
+            args.output_dir, f"summary_metrics_{args.feature_mode}_seed{seed}.json"
+        )
+        with open(seed_json, "w") as _f:
+            json.dump({"seed": seed, **seed_summary}, _f, indent=2)
+
+        if i == 0:
+            model, summary, preds, per_strain, dte, y_te, feature_debug = out
 
     print("[FINAL] Test macro-AUPRC:", summary["test_macro_pr_auc_by_strain"])
+
+    # Spread across seeds - the variance estimate the reviewers asked for.
+    seed_df = pd.DataFrame(seed_rows)
+    seed_csv = os.path.join(args.output_dir, f"seed_metrics_{args.feature_mode}.csv")
+    seed_df.to_csv(seed_csv, index=False)
+    print(f" - Saved per-seed metrics: {seed_csv}")
+
+    if len(seed_rows) > 1:
+        macro = seed_df["test_macro_pr_auc_by_strain"]
+        pooled = seed_df["pr_auc"]
+
+        # With no row or column subsampling, xgboost's hist builder is deterministic,
+        # so the seeds coincide and the spread is zero by construction rather than by
+        # evidence. Say so loudly instead of publishing a 0.0000 error bar.
+        if macro.std(ddof=1) == 0.0:
+            print("[SEEDS][WARNING] Every seed produced an identical model. The selected "
+                  f"configuration (subsample={best_params.get('subsample')}, "
+                  f"colsample_bytree={best_params.get('colsample_bytree')}) is deterministic, "
+                  "so seed variance is not a usable variance estimate here - use repeated "
+                  "scaffold splits instead.")
+        print(f"[SEEDS] n={len(seed_df)}  "
+              f"test macro PR-AUC {macro.mean():.4f} +/- {macro.std(ddof=1):.4f}  "
+              f"[{macro.min():.4f}, {macro.max():.4f}]")
+        print(f"[SEEDS] {'':9s}"
+              f"test pooled PR-AUC {pooled.mean():.4f} +/- {pooled.std(ddof=1):.4f}  "
+              f"[{pooled.min():.4f}, {pooled.max():.4f}]")
 
     # Save full summary metrics as JSON so downstream scripts can aggregate them.
     summary_path = os.path.join(args.output_dir, f"summary_metrics_{args.feature_mode}.json")
     with open(summary_path, "w") as _f:
-        json.dump(summary, _f, indent=2)
+        json.dump({"best_val_macro_pr_auc": best_val,
+                   "best_params": best_params,
+                   "test_seeds": test_seeds,
+                   **summary}, _f, indent=2)
     print(f" - Saved summary metrics: {summary_path}")
 
         # -------------------- SAVE FEATURE LISTS USED --------------------

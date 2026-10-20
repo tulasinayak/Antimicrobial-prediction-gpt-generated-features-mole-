@@ -1,0 +1,28 @@
+# The build context must stay small: results/ alone is ~8 GB and would
+# otherwise be shipped to the daemon on every build.
+results/
+figures/
+analysis/
+FINAL_RESULT/
+Result/
+
+# Regenerable or environment-specific.
+**/__pycache__/
+**/*.py[cod]
+**/.ipynb_checkpoints/
+*.pkl
+
+# Repository and tooling metadata.
+.git/
+.github/
+.claude/
+.gitignore
+.gitattributes
+
+# Secrets must never enter an image layer.
+.env
+*.env
+
+# Docs and scratch.
+*.md
+!README.md

@@ -1,0 +1,379 @@
+[1] Loading SF3 and building binary labels.
+ - labels matrix: (1197, 40), pairs: (47880, 3)
+[2] Loading GPT features.
+ - GPT features: (1197, 268)
+[2c] Loading / computing MolE features.
+[MolE] Loaded precomputed MolE: data/raw_data/maier_mole_representation_with_id.tsv.gz  shape=(1197, 1000)
+ - MolE features: (1197, 1000)
+[3] Feature mode: mole_plus_gpt
+ - Combined features: (1197, 1268)
+ - Skipping compound_features_combined dump (--skip_intermediate_dumps).
+[4] Merging pairs with features.
+ - Pairs with features: (47880, 1271)
+[5] Loading exact split file.
+ - Exact split: (1197, 2)
+ - Saved exact split copy: results/table1\mole_plus_gpt-4o\exact_split_used_mole_plus_gpt.csv
+ - Joined with split: (47880, 1272)
+split
+train    38280
+test      4800
+val       4800
+Name: count, dtype: int64
+
+[SANITY CHECKS]
+Unique compounds per split:
+split
+test     120
+train    957
+val      120
+Name: prestwick_ID, dtype: int64
+
+Rows per split:
+split
+train    38280
+test      4800
+val       4800
+Name: count, dtype: int64
+
+Max number of splits per compound: 1
+Dropping constant feature columns: ['mole_27', 'mole_30', 'mole_31', 'mole_34', 'mole_36', 'mole_40', 'mole_43', 'mole_55', 'mole_59', 'mole_72', 'mole_83', 'mole_108', 'mole_112', 'mole_125', 'mole_126', 'mole_132', 'mole_138', 'mole_141', 'mole_143', 'mole_146', 'mole_152', 'mole_160', 'mole_177', 'mole_179', 'mole_199', 'mole_214', 'mole_223', 'mole_241', 'mole_244', 'mole_246', 'mole_249', 'mole_296', 'mole_303', 'mole_306', 'mole_326', 'mole_334', 'mole_377', 'mole_391', 'mole_402', 'mole_442', 'mole_469', 'mole_475', 'mole_481', 'mole_558', 'mole_592', 'mole_650', 'mole_672', 'mole_674', 'mole_681', 'mole_693', 'mole_696', 'mole_698', 'mole_699', 'mole_707', 'mole_718', 'mole_722', 'mole_729', 'mole_732', 'mole_764', 'mole_774', 'mole_777', 'mole_785', 'mole_789', 'mole_791', 'mole_792']
+ - Skipping compound_strain_pairs_with_features dump (--skip_intermediate_dumps).
+[6] Hyperparameter search + training with exact split.
+
+[SEARCH] Trial 1/5
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 81
+ - total raw features: 1017
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1055
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.73x
+[Val] ensemble AUPRC=0.66213
+[Val] best F1=0.5840 @ thr=0.5573
+[Test] AUPRC=0.70195  base_pos_rate=0.159, norm_AP=4.41x
+[Test] F1=0.6358 @ thr=0.5573
+[Test] Precision=0.6980
+[Test] Recall=0.5838
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.7100 and accuracy: 0.8935416666666667
+Test F1: 0.6358
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 81
+ - total raw features: 1017
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1055
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.87x
+[Val] ensemble AUPRC=0.68776
+[Val] best F1=0.6294 @ thr=0.3005
+[Test] AUPRC=0.68289  base_pos_rate=0.159, norm_AP=4.29x
+[Test] F1=0.5595 @ thr=0.3005
+[Test] Precision=0.4916
+[Test] Recall=0.6492
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6906 and accuracy: 0.8372916666666667
+Test F1: 0.5595
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 81
+ - total raw features: 1017
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1055
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.78x
+[Val] ensemble AUPRC=0.67022
+[Val] best F1=0.5858 @ thr=0.4194
+[Test] AUPRC=0.69138  base_pos_rate=0.159, norm_AP=4.34x
+[Test] F1=0.6159 @ thr=0.4194
+[Test] Precision=0.5934
+[Test] Recall=0.6401
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.7023 and accuracy: 0.8729166666666667
+Test F1: 0.6159
+================================================
+
+[SEARCH] Mean validation macro-AUPRC: 0.6818
+
+[SEARCH] Trial 2/5
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 81
+ - total raw features: 1017
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1055
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.91x
+[Val] ensemble AUPRC=0.69319
+[Val] best F1=0.6414 @ thr=0.3756
+[Test] AUPRC=0.64496  base_pos_rate=0.159, norm_AP=4.05x
+[Test] F1=0.6011 @ thr=0.3756
+[Test] Precision=0.6651
+[Test] Recall=0.5484
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6528 and accuracy: 0.8841666666666667
+Test F1: 0.6011
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 81
+ - total raw features: 1017
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1055
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.87x
+[Val] ensemble AUPRC=0.68714
+[Val] best F1=0.6439 @ thr=0.3101
+[Test] AUPRC=0.66035  base_pos_rate=0.159, norm_AP=4.15x
+[Test] F1=0.6100 @ thr=0.3101
+[Test] Precision=0.6714
+[Test] Recall=0.5589
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6642 and accuracy: 0.88625
+Test F1: 0.6100
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 81
+ - total raw features: 1017
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1055
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.87x
+[Val] ensemble AUPRC=0.68761
+[Val] best F1=0.6285 @ thr=0.2417
+[Test] AUPRC=0.65466  base_pos_rate=0.159, norm_AP=4.11x
+[Test] F1=0.6014 @ thr=0.2417
+[Test] Precision=0.6307
+[Test] Recall=0.5746
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6601 and accuracy: 0.87875
+Test F1: 0.6014
+================================================
+
+[SEARCH] Mean validation macro-AUPRC: 0.7031
+
+[SEARCH] Trial 3/5
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 81
+ - total raw features: 1017
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1055
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.55x
+[Val] ensemble AUPRC=0.63007
+[Val] best F1=0.5886 @ thr=0.2746
+[Test] AUPRC=0.63153  base_pos_rate=0.159, norm_AP=3.97x
+[Test] F1=0.5613 @ thr=0.2746
+[Test] Precision=0.4907
+[Test] Recall=0.6558
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6414 and accuracy: 0.836875
+Test F1: 0.5613
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 81
+ - total raw features: 1017
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1055
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.77x
+[Val] ensemble AUPRC=0.66969
+[Val] best F1=0.6189 @ thr=0.3416
+[Test] AUPRC=0.64480  base_pos_rate=0.159, norm_AP=4.05x
+[Test] F1=0.5841 @ thr=0.3416
+[Test] Precision=0.5593
+[Test] Recall=0.6113
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6568 and accuracy: 0.8614583333333333
+Test F1: 0.5841
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 81
+ - total raw features: 1017
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1055
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.57x
+[Val] ensemble AUPRC=0.63290
+[Val] best F1=0.5818 @ thr=0.3210
+[Test] AUPRC=0.69506  base_pos_rate=0.159, norm_AP=4.37x
+[Test] F1=0.5855 @ thr=0.3210
+[Test] Precision=0.5359
+[Test] Recall=0.6453
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.7034 and accuracy: 0.8545833333333334
+Test F1: 0.5855
+================================================
+
+[SEARCH] Mean validation macro-AUPRC: 0.6581
+
+[SEARCH] Trial 4/5
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 81
+ - total raw features: 1017
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+C:\Users\Tulasi Nayak\miniconda3\Lib\site-packages\sklearn\impute\_base.py:641: UserWarning: Skipping features without any observed values: ['smiles_resolution']. At least one non-missing value is needed for imputation with strategy='constant'.
+  warnings.warn(
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1055
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']

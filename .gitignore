@@ -57,3 +57,6 @@ venv/
 # OS
 .DS_Store
 Thumbs.db
+
+# Scratch dir for child-process temp during Table 1 runs
+results/table1/_tmp/
