@@ -84,6 +84,36 @@ on this 120-compound test set, the configuration alone moves test PR-AUC by abou
 **Consequence:** MolE alone (0.7231) ties the best GPT configuration (0.7233), and
 RDKit alone (0.7156) beats five of six. *(pending: seed spreads)*
 
+## 3b. Table 1 over 5 full-pipeline trials (Kaggle GPU)
+
+`scripts/run_table1.py --trials 0,1,2,3,4 --device cuda`, MolE's split, our protocol with
+the seed fix. Each trial re-runs the 5-config search (configs shared by all rows in that
+trial), selection on validation, and one test run. 45/45 runs completed on GPU.
+Results: `results/table1_trials/` (`table1.csv`, `RESULTS_MANIFEST.csv`, per-trial metrics).
+
+| Representation | Val PR-AUC | Test PR-AUC (per-strain) | Test PR-AUC (pooled) |
+|---|---|---|---|
+| MolE | 0.6885 ± 0.0339 | 0.6818 ± 0.0234 | 0.6734 ± 0.0259 |
+| RDKit descriptors | 0.6917 ± 0.0068 | 0.6977 ± 0.0083 | 0.6905 ± 0.0069 |
+| MolE + RDKit | 0.7126 ± 0.0051 | 0.6861 ± 0.0153 | 0.6809 ± 0.0156 |
+| MolE + GPT-4o | 0.7088 ± 0.0104 | 0.6898 ± 0.0075 | 0.6845 ± 0.0075 |
+| MolE + GPT-4o-mini | 0.6998 ± 0.0164 | 0.6825 ± 0.0251 | 0.6745 ± 0.0298 |
+| MolE + GPT-4.1 | 0.7183 ± 0.0071 | 0.6962 ± 0.0153 | 0.6892 ± 0.0159 |
+| MolE + GPT-4.1-mini | 0.7118 ± 0.0062 | 0.6844 ± 0.0126 | 0.6751 ± 0.0136 |
+| MolE + GPT-5.1 | 0.7311 ± 0.0075 | 0.6594 ± 0.0228 | 0.6439 ± 0.0209 |
+| MolE + GPT-5.2 | 0.7064 ± 0.0069 | **0.7102 ± 0.0164** | **0.7055 ± 0.0171** |
+
+Paired by trial (per-strain test, n = 5):
+- MolE + GPT-5.2 beats MolE in 5/5 trials, +0.028 (paired t p = 0.011; Wilcoxon p = 0.062,
+  its minimum at n = 5). Not significant after correcting for 8 comparisons.
+- MolE + GPT-5.2 vs RDKit alone: +0.013, 3/5 wins, p = 0.12. No GPT row beats RDKit
+  significantly; RDKit alone ranks 2nd on test.
+- MolE + GPT-5.1 is worse than MolE in 5/5 trials (-0.023, p = 0.025).
+- Validation and test rankings still disagree (Spearman -0.13 across the 9 rows):
+  GPT-5.1 ranks 1st on validation and last on test in every trial. The validation set is
+  used for early stopping, threshold and config selection, so it is optimistic, most of all
+  for the largest feature set (GPT-5.1, 1481 features).
+
 ## 4. External MIC validation: GPT does not improve attribution
 
 `scripts/ap_g_comparison.py`. Supplementary Table 10 already carries the published MolE

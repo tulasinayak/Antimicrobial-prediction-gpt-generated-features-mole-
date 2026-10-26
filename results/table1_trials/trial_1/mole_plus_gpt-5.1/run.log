@@ -1,0 +1,559 @@
+[1] Loading SF3 and building binary labels.
+ - labels matrix: (1197, 40), pairs: (47880, 3)
+[2] Loading GPT features.
+ - GPT features: (1197, 511)
+[2c] Loading / computing MolE features.
+[MolE] Loaded precomputed MolE: data/raw_data/maier_mole_representation_with_id.tsv.gz  shape=(1197, 1000)
+ - MolE features: (1197, 1000)
+[3] Feature mode: mole_plus_gpt
+ - Combined features: (1197, 1511)
+ - Skipping compound_features_combined dump (--skip_intermediate_dumps).
+[4] Merging pairs with features.
+ - Pairs with features: (47880, 1514)
+[5] Loading exact split file.
+ - Exact split: (1197, 2)
+ - Saved exact split copy: results/table1_trials/trial_1/mole_plus_gpt-5.1/exact_split_used_mole_plus_gpt.csv
+ - Joined with split: (47880, 1515)
+split
+train    38280
+test      4800
+val       4800
+Name: count, dtype: int64
+
+[SANITY CHECKS]
+Unique compounds per split:
+split
+test     120
+train    957
+val      120
+Name: prestwick_ID, dtype: int64
+
+Rows per split:
+split
+train    38280
+test      4800
+val       4800
+Name: count, dtype: int64
+
+Max number of splits per compound: 1
+Dropping constant feature columns: ['mole_27', 'mole_30', 'mole_31', 'mole_34', 'mole_36', 'mole_40', 'mole_43', 'mole_55', 'mole_59', 'mole_72', 'mole_83', 'mole_108', 'mole_112', 'mole_125', 'mole_126', 'mole_132', 'mole_138', 'mole_141', 'mole_143', 'mole_146', 'mole_152', 'mole_160', 'mole_177', 'mole_179', 'mole_199', 'mole_214', 'mole_223', 'mole_241', 'mole_244', 'mole_246', 'mole_249', 'mole_296', 'mole_303', 'mole_306', 'mole_326', 'mole_334', 'mole_377', 'mole_391', 'mole_402', 'mole_442', 'mole_469', 'mole_475', 'mole_481', 'mole_558', 'mole_592', 'mole_650', 'mole_672', 'mole_674', 'mole_681', 'mole_693', 'mole_696', 'mole_698', 'mole_699', 'mole_707', 'mole_718', 'mole_722', 'mole_729', 'mole_732', 'mole_764', 'mole_774', 'mole_777', 'mole_785', 'mole_789', 'mole_791', 'mole_792', 'phosphorylation_site_count']
+ - Skipping compound_strain_pairs_with_features dump (--skip_intermediate_dumps).
+[6] Hyperparameter search + training with exact split.
+
+[SEARCH] Trial 1/5
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+/usr/local/lib/python3.13/dist-packages/sklearn/impute/_base.py:572: FutureWarning: Currently, when `keep_empty_feature=False` and `strategy="constant"`, empty features are not dropped. This behaviour will change in version 1.8. Set `keep_empty_feature=True` to preserve this behaviour.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 506
+ - total raw features: 1442
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1481
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.89x
+[Val] ensemble AUPRC=0.69106
+[Val] best F1=0.6240 @ thr=0.1191
+[Test] AUPRC=0.58693  base_pos_rate=0.159, norm_AP=3.69x
+[Test] F1=0.5718 @ thr=0.1191
+[Test] Precision=0.6338
+[Test] Recall=0.5209
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6032 and accuracy: 0.8758333333333334
+Test F1: 0.5718
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+/usr/local/lib/python3.13/dist-packages/sklearn/impute/_base.py:572: FutureWarning: Currently, when `keep_empty_feature=False` and `strategy="constant"`, empty features are not dropped. This behaviour will change in version 1.8. Set `keep_empty_feature=True` to preserve this behaviour.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 506
+ - total raw features: 1442
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1481
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.88x
+[Val] ensemble AUPRC=0.68882
+[Val] best F1=0.6127 @ thr=0.0719
+[Test] AUPRC=0.62195  base_pos_rate=0.159, norm_AP=3.91x
+[Test] F1=0.5784 @ thr=0.0719
+[Test] Precision=0.5682
+[Test] Recall=0.5890
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6390 and accuracy: 0.8633333333333333
+Test F1: 0.5784
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+/usr/local/lib/python3.13/dist-packages/sklearn/impute/_base.py:572: FutureWarning: Currently, when `keep_empty_feature=False` and `strategy="constant"`, empty features are not dropped. This behaviour will change in version 1.8. Set `keep_empty_feature=True` to preserve this behaviour.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 506
+ - total raw features: 1442
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1481
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.66x
+[Val] ensemble AUPRC=0.64978
+[Val] best F1=0.5869 @ thr=0.1273
+[Test] AUPRC=0.63745  base_pos_rate=0.159, norm_AP=4.00x
+[Test] F1=0.6004 @ thr=0.1273
+[Test] Precision=0.6166
+[Test] Recall=0.5851
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6509 and accuracy: 0.8760416666666667
+Test F1: 0.6004
+================================================
+
+[SEARCH] Mean validation macro-AUPRC: 0.6834
+
+[SEARCH] Trial 2/5
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+/usr/local/lib/python3.13/dist-packages/sklearn/impute/_base.py:572: FutureWarning: Currently, when `keep_empty_feature=False` and `strategy="constant"`, empty features are not dropped. This behaviour will change in version 1.8. Set `keep_empty_feature=True` to preserve this behaviour.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 506
+ - total raw features: 1442
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1481
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=4.06x
+[Val] ensemble AUPRC=0.72053
+[Val] best F1=0.6400 @ thr=0.2738
+[Test] AUPRC=0.65801  base_pos_rate=0.159, norm_AP=4.13x
+[Test] F1=0.5801 @ thr=0.2738
+[Test] Precision=0.5753
+[Test] Recall=0.5851
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6722 and accuracy: 0.8652083333333334
+Test F1: 0.5801
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+/usr/local/lib/python3.13/dist-packages/sklearn/impute/_base.py:572: FutureWarning: Currently, when `keep_empty_feature=False` and `strategy="constant"`, empty features are not dropped. This behaviour will change in version 1.8. Set `keep_empty_feature=True` to preserve this behaviour.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 506
+ - total raw features: 1442
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1481
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=4.07x
+[Val] ensemble AUPRC=0.72221
+[Val] best F1=0.6619 @ thr=0.3795
+[Test] AUPRC=0.63366  base_pos_rate=0.159, norm_AP=3.98x
+[Test] F1=0.5892 @ thr=0.3795
+[Test] Precision=0.7016
+[Test] Recall=0.5079
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6486 and accuracy: 0.8872916666666667
+Test F1: 0.5892
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+/usr/local/lib/python3.13/dist-packages/sklearn/impute/_base.py:572: FutureWarning: Currently, when `keep_empty_feature=False` and `strategy="constant"`, empty features are not dropped. This behaviour will change in version 1.8. Set `keep_empty_feature=True` to preserve this behaviour.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 506
+ - total raw features: 1442
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1481
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=4.04x
+[Val] ensemble AUPRC=0.71636
+[Val] best F1=0.6477 @ thr=0.2270
+[Test] AUPRC=0.65977  base_pos_rate=0.159, norm_AP=4.15x
+[Test] F1=0.6076 @ thr=0.2270
+[Test] Precision=0.6620
+[Test] Recall=0.5615
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6687 and accuracy: 0.8845833333333334
+Test F1: 0.6076
+================================================
+
+[SEARCH] Mean validation macro-AUPRC: 0.7331
+
+[SEARCH] Trial 3/5
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+/usr/local/lib/python3.13/dist-packages/sklearn/impute/_base.py:572: FutureWarning: Currently, when `keep_empty_feature=False` and `strategy="constant"`, empty features are not dropped. This behaviour will change in version 1.8. Set `keep_empty_feature=True` to preserve this behaviour.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 506
+ - total raw features: 1442
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1481
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=4.10x
+[Val] ensemble AUPRC=0.72843
+[Val] best F1=0.6450 @ thr=0.4155
+[Test] AUPRC=0.64833  base_pos_rate=0.159, norm_AP=4.07x
+[Test] F1=0.6110 @ thr=0.4155
+[Test] Precision=0.6347
+[Test] Recall=0.5890
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6647 and accuracy: 0.880625
+Test F1: 0.6110
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+/usr/local/lib/python3.13/dist-packages/sklearn/impute/_base.py:572: FutureWarning: Currently, when `keep_empty_feature=False` and `strategy="constant"`, empty features are not dropped. This behaviour will change in version 1.8. Set `keep_empty_feature=True` to preserve this behaviour.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 506
+ - total raw features: 1442
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1481
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.97x
+[Val] ensemble AUPRC=0.70526
+[Val] best F1=0.6209 @ thr=0.5121
+[Test] AUPRC=0.64789  base_pos_rate=0.159, norm_AP=4.07x
+[Test] F1=0.6054 @ thr=0.5121
+[Test] Precision=0.6641
+[Test] Recall=0.5563
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6672 and accuracy: 0.8845833333333334
+Test F1: 0.6054
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+/usr/local/lib/python3.13/dist-packages/sklearn/impute/_base.py:572: FutureWarning: Currently, when `keep_empty_feature=False` and `strategy="constant"`, empty features are not dropped. This behaviour will change in version 1.8. Set `keep_empty_feature=True` to preserve this behaviour.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 506
+ - total raw features: 1442
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1481
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=4.07x
+[Val] ensemble AUPRC=0.72166
+[Val] best F1=0.6335 @ thr=0.2842
+[Test] AUPRC=0.65207  base_pos_rate=0.159, norm_AP=4.10x
+[Test] F1=0.5870 @ thr=0.2842
+[Test] Precision=0.5624
+[Test] Recall=0.6139
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6634 and accuracy: 0.8625
+Test F1: 0.5870
+================================================
+
+[SEARCH] Mean validation macro-AUPRC: 0.7259
+
+[SEARCH] Trial 4/5
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+/usr/local/lib/python3.13/dist-packages/sklearn/impute/_base.py:572: FutureWarning: Currently, when `keep_empty_feature=False` and `strategy="constant"`, empty features are not dropped. This behaviour will change in version 1.8. Set `keep_empty_feature=True` to preserve this behaviour.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 506
+ - total raw features: 1442
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1481
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=4.06x
+[Val] ensemble AUPRC=0.72097
+[Val] best F1=0.6443 @ thr=0.0850
+[Test] AUPRC=0.63613  base_pos_rate=0.159, norm_AP=4.00x
+[Test] F1=0.5707 @ thr=0.0850
+[Test] Precision=0.5490
+[Test] Recall=0.5942
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6469 and accuracy: 0.8577083333333333
+Test F1: 0.5707
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+/usr/local/lib/python3.13/dist-packages/sklearn/impute/_base.py:572: FutureWarning: Currently, when `keep_empty_feature=False` and `strategy="constant"`, empty features are not dropped. This behaviour will change in version 1.8. Set `keep_empty_feature=True` to preserve this behaviour.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 506
+ - total raw features: 1442
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1481
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.99x
+[Val] ensemble AUPRC=0.70834
+[Val] best F1=0.6498 @ thr=0.1472
+[Test] AUPRC=0.65345  base_pos_rate=0.159, norm_AP=4.11x
+[Test] F1=0.6203 @ thr=0.1472
+[Test] Precision=0.6411
+[Test] Recall=0.6008
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6669 and accuracy: 0.8829166666666667
+Test F1: 0.6203
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+/usr/local/lib/python3.13/dist-packages/sklearn/impute/_base.py:572: FutureWarning: Currently, when `keep_empty_feature=False` and `strategy="constant"`, empty features are not dropped. This behaviour will change in version 1.8. Set `keep_empty_feature=True` to preserve this behaviour.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 506
+ - total raw features: 1442
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1481
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.93x
+[Val] ensemble AUPRC=0.69725
+[Val] best F1=0.6275 @ thr=0.2225
+[Test] AUPRC=0.66854  base_pos_rate=0.159, norm_AP=4.20x
+[Test] F1=0.6180 @ thr=0.2225
+[Test] Precision=0.7168
+[Test] Recall=0.5432
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6829 and accuracy: 0.893125
+Test F1: 0.6180
+================================================
+
+[SEARCH] Mean validation macro-AUPRC: 0.7128
+
+[SEARCH] Trial 5/5
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+/usr/local/lib/python3.13/dist-packages/sklearn/impute/_base.py:572: FutureWarning: Currently, when `keep_empty_feature=False` and `strategy="constant"`, empty features are not dropped. This behaviour will change in version 1.8. Set `keep_empty_feature=True` to preserve this behaviour.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 506
+ - total raw features: 1442
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1481
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.95x
+[Val] ensemble AUPRC=0.70157
+[Val] best F1=0.6170 @ thr=0.4432
+[Test] AUPRC=0.60897  base_pos_rate=0.159, norm_AP=3.83x
+[Test] F1=0.5686 @ thr=0.4432
+[Test] Precision=0.6149
+[Test] Recall=0.5288
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6304 and accuracy: 0.8722916666666667
+Test F1: 0.5686
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+/usr/local/lib/python3.13/dist-packages/sklearn/impute/_base.py:572: FutureWarning: Currently, when `keep_empty_feature=False` and `strategy="constant"`, empty features are not dropped. This behaviour will change in version 1.8. Set `keep_empty_feature=True` to preserve this behaviour.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 506
+ - total raw features: 1442
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1481
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.77x
+[Val] ensemble AUPRC=0.67003
+[Val] best F1=0.5858 @ thr=0.2846
+[Test] AUPRC=0.55176  base_pos_rate=0.159, norm_AP=3.47x
+[Test] F1=0.5300 @ thr=0.2846
+[Test] Precision=0.5029
+[Test] Recall=0.5602
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.5676 and accuracy: 0.841875
+Test F1: 0.5300
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+/usr/local/lib/python3.13/dist-packages/sklearn/impute/_base.py:572: FutureWarning: Currently, when `keep_empty_feature=False` and `strategy="constant"`, empty features are not dropped. This behaviour will change in version 1.8. Set `keep_empty_feature=True` to preserve this behaviour.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 506
+ - total raw features: 1442
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1481
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=4.00x
+[Val] ensemble AUPRC=0.71082
+[Val] best F1=0.6446 @ thr=0.2840
+[Test] AUPRC=0.59441  base_pos_rate=0.159, norm_AP=3.73x
+[Test] F1=0.5578 @ thr=0.2840
+[Test] Precision=0.5420
+[Test] Recall=0.5746
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6096 and accuracy: 0.855
+Test F1: 0.5578
+================================================
+
+[SEARCH] Mean validation macro-AUPRC: 0.7041
+[BEST] Validation macro-AUPRC: 0.7331
+[BEST] Params: {'tree_method': 'hist', 'max_bin': 512, 'lambda': 1.0, 'alpha': 0.0, 'objective': 'binary:logistic', 'eval_metric': 'aucpr', 'verbosity': 0, 'eta': 0.05, 'max_depth': 8, 'subsample': 1.0, 'colsample_bytree': 0.8, 'min_child_weight': 1, 'gamma': 0.0}
+
+[FINAL] Refit 1/1 with training seed 1
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+/usr/local/lib/python3.13/dist-packages/sklearn/impute/_base.py:572: FutureWarning: Currently, when `keep_empty_feature=False` and `strategy="constant"`, empty features are not dropped. This behaviour will change in version 1.8. Set `keep_empty_feature=True` to preserve this behaviour.
+  warnings.warn(
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 506
+ - total raw features: 1442
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 1481
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=4.07x
+[Val] ensemble AUPRC=0.72221
+[Val] best F1=0.6619 @ thr=0.3795
+[Test] AUPRC=0.63366  base_pos_rate=0.159, norm_AP=3.98x
+[Test] F1=0.5892 @ thr=0.3795
+[Test] Precision=0.7016
+[Test] Recall=0.5079
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6486 and accuracy: 0.8872916666666667
+Test F1: 0.5892
+================================================
+
+[FINAL] Test macro-AUPRC: 0.6485774263168402
+ - Saved per-seed metrics: results/table1_trials/trial_1/mole_plus_gpt-5.1/seed_metrics_mole_plus_gpt.csv
+ - Saved summary metrics: results/table1_trials/trial_1/mole_plus_gpt-5.1/summary_metrics_mole_plus_gpt.json
+[6b] Saving exact feature lists used by XGBoost...
+ - Saved raw feature list: results/table1_trials/trial_1/mole_plus_gpt-5.1/raw_features_used_mole_plus_gpt.csv
+ - Saved transformed XGBoost feature list: results/table1_trials/trial_1/mole_plus_gpt-5.1/xgb_transformed_features_mole_plus_gpt.csv
+[7] Extracting feature importances...
+
+Top 20 important features (all types):
+                                        feature_name   importance
+913                            gpt__heteroatom_count  1980.168945
+223                                   mole__mole_228   922.370667
+251                                   mole__mole_261   589.410583
+1132            gpt__intramolecular_hbond_likelihood   550.721375
+114                                    mole__mole_94   476.223633
+998                         gpt__pka_strongest_basic   470.520172
+91                                     mole__mole_68   440.424072
+826                                   mole__mole_930   410.723602
+972                   gpt__num_pyrimidine_like_cores   359.865234
+1303    gpt__toxicity_reactive_metabolite_risk_index   319.581757
+143                                   mole__mole_130   270.732025
+1212  gpt__cell_wall_penetration_index_gram_negative   268.434113
+214                                   mole__mole_218   260.497894
+1145              gpt__metal_binding_site_count_soft   253.249908
+756                                   mole__mole_818   188.308151
+283                                   mole__mole_294   184.728683
+378                                   mole__mole_398   173.512589
+1218     gpt__periplasmic_targeting_likelihood_index   171.635056
+1191     gpt__bioavailability_oral_fraction_estimate   160.634262
+298                                   mole__mole_312   155.124420
+
+Top 10 important non-MolE/non-ChemDesc features:
+                                        feature_name   importance
+913                            gpt__heteroatom_count  1980.168945
+1132            gpt__intramolecular_hbond_likelihood   550.721375
+998                         gpt__pka_strongest_basic   470.520172
+972                   gpt__num_pyrimidine_like_cores   359.865234
+1303    gpt__toxicity_reactive_metabolite_risk_index   319.581757
+1212  gpt__cell_wall_penetration_index_gram_negative   268.434113
+1145              gpt__metal_binding_site_count_soft   253.249908
+1218     gpt__periplasmic_targeting_likelihood_index   171.635056
+1191     gpt__bioavailability_oral_fraction_estimate   160.634262
+1272             gpt__broad_spectrum_potential_index   148.674789
+ - Saved top features to: results/table1_trials/trial_1/mole_plus_gpt-5.1/top_gpt_features_mole_plus_gpt.csv
+ - Saved: results/table1_trials/trial_1/mole_plus_gpt-5.1/test_predictions_mole_plus_gpt.csv
+Formatting predictions in MolE paper-style output...
+ - Saved paper-style predictions: results/table1_trials/trial_1/mole_plus_gpt-5.1/paper_style_predictions_mole_plus_gpt.csv
+ - Saved: results/table1_trials/trial_1/mole_plus_gpt-5.1/per_strain_metrics_mole_plus_gpt.csv
+ - Model saved: results/table1_trials/trial_1/mole_plus_gpt-5.1/xgb_model_mole_plus_gpt.pkl
+
+[Done]

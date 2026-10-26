@@ -1,0 +1,511 @@
+[1] Loading SF3 and building binary labels.
+ - labels matrix: (1197, 40), pairs: (47880, 3)
+[2c] Loading / computing MolE features.
+[MolE] Loaded precomputed MolE: data/raw_data/maier_mole_representation_with_id.tsv.gz  shape=(1197, 1000)
+ - MolE features: (1197, 1000)
+[3] Feature mode: mole_only
+ - Combined features: (1197, 1000)
+ - Skipping compound_features_combined dump (--skip_intermediate_dumps).
+[4] Merging pairs with features.
+ - Pairs with features: (47880, 1003)
+[5] Loading exact split file.
+ - Exact split: (1197, 2)
+ - Saved exact split copy: results/table1_trials/trial_0/mole_only/exact_split_used_mole_only.csv
+ - Joined with split: (47880, 1004)
+split
+train    38280
+test      4800
+val       4800
+Name: count, dtype: int64
+
+[SANITY CHECKS]
+Unique compounds per split:
+split
+test     120
+train    957
+val      120
+Name: prestwick_ID, dtype: int64
+
+Rows per split:
+split
+train    38280
+test      4800
+val       4800
+Name: count, dtype: int64
+
+Max number of splits per compound: 1
+Dropping constant feature columns: ['mole_27', 'mole_30', 'mole_31', 'mole_34', 'mole_36', 'mole_40', 'mole_43', 'mole_55', 'mole_59', 'mole_72', 'mole_83', 'mole_108', 'mole_112', 'mole_125', 'mole_126', 'mole_132', 'mole_138', 'mole_141', 'mole_143', 'mole_146', 'mole_152', 'mole_160', 'mole_177', 'mole_179', 'mole_199', 'mole_214', 'mole_223', 'mole_241', 'mole_244', 'mole_246', 'mole_249', 'mole_296', 'mole_303', 'mole_306', 'mole_326', 'mole_334', 'mole_377', 'mole_391', 'mole_402', 'mole_442', 'mole_469', 'mole_475', 'mole_481', 'mole_558', 'mole_592', 'mole_650', 'mole_672', 'mole_674', 'mole_681', 'mole_693', 'mole_696', 'mole_698', 'mole_699', 'mole_707', 'mole_718', 'mole_722', 'mole_729', 'mole_732', 'mole_764', 'mole_774', 'mole_777', 'mole_785', 'mole_789', 'mole_791', 'mole_792']
+ - Skipping compound_strain_pairs_with_features dump (--skip_intermediate_dumps).
+[6] Hyperparameter search + training with exact split.
+
+[SEARCH] Trial 1/5
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 0
+ - total raw features: 936
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 975
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.78x
+[Val] ensemble AUPRC=0.67070
+[Val] best F1=0.5974 @ thr=0.1524
+[Test] AUPRC=0.68104  base_pos_rate=0.159, norm_AP=4.28x
+[Test] F1=0.5862 @ thr=0.1524
+[Test] Precision=0.5587
+[Test] Recall=0.6165
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6896 and accuracy: 0.8614583333333333
+Test F1: 0.5862
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 0
+ - total raw features: 936
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 975
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.80x
+[Val] ensemble AUPRC=0.67406
+[Val] best F1=0.5907 @ thr=0.1995
+[Test] AUPRC=0.68904  base_pos_rate=0.159, norm_AP=4.33x
+[Test] F1=0.6043 @ thr=0.1995
+[Test] Precision=0.5672
+[Test] Recall=0.6466
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6957 and accuracy: 0.8652083333333334
+Test F1: 0.6043
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 0
+ - total raw features: 936
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 975
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.79x
+[Val] ensemble AUPRC=0.67281
+[Val] best F1=0.6138 @ thr=0.2889
+[Test] AUPRC=0.68813  base_pos_rate=0.159, norm_AP=4.32x
+[Test] F1=0.6040 @ thr=0.2889
+[Test] Precision=0.5982
+[Test] Recall=0.6099
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6969 and accuracy: 0.8727083333333333
+Test F1: 0.6040
+================================================
+
+[SEARCH] Mean validation macro-AUPRC: 0.6788
+
+[SEARCH] Trial 2/5
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 0
+ - total raw features: 936
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 975
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.90x
+[Val] ensemble AUPRC=0.69202
+[Val] best F1=0.6305 @ thr=0.0987
+[Test] AUPRC=0.67791  base_pos_rate=0.159, norm_AP=4.26x
+[Test] F1=0.5830 @ thr=0.0987
+[Test] Precision=0.5627
+[Test] Recall=0.6047
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6842 and accuracy: 0.8622916666666667
+Test F1: 0.5830
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 0
+ - total raw features: 936
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 975
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.88x
+[Val] ensemble AUPRC=0.68877
+[Val] best F1=0.6154 @ thr=0.2372
+[Test] AUPRC=0.69762  base_pos_rate=0.159, norm_AP=4.38x
+[Test] F1=0.6130 @ thr=0.2372
+[Test] Precision=0.6230
+[Test] Recall=0.6034
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.7026 and accuracy: 0.87875
+Test F1: 0.6130
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 0
+ - total raw features: 936
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 975
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.89x
+[Val] ensemble AUPRC=0.69003
+[Val] best F1=0.6238 @ thr=0.1569
+[Test] AUPRC=0.70216  base_pos_rate=0.159, norm_AP=4.41x
+[Test] F1=0.6239 @ thr=0.1569
+[Test] Precision=0.6302
+[Test] Recall=0.6178
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.7093 and accuracy: 0.8814583333333333
+Test F1: 0.6239
+================================================
+
+[SEARCH] Mean validation macro-AUPRC: 0.7022
+
+[SEARCH] Trial 3/5
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 0
+ - total raw features: 936
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 975
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.71x
+[Val] ensemble AUPRC=0.65866
+[Val] best F1=0.5893 @ thr=0.6176
+[Test] AUPRC=0.68947  base_pos_rate=0.159, norm_AP=4.33x
+[Test] F1=0.6314 @ thr=0.6176
+[Test] Precision=0.7464
+[Test] Recall=0.5471
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.7012 and accuracy: 0.8983333333333333
+Test F1: 0.6314
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 0
+ - total raw features: 936
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 975
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.91x
+[Val] ensemble AUPRC=0.69469
+[Val] best F1=0.6170 @ thr=0.3795
+[Test] AUPRC=0.68054  base_pos_rate=0.159, norm_AP=4.28x
+[Test] F1=0.5773 @ thr=0.3795
+[Test] Precision=0.5359
+[Test] Recall=0.6257
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6880 and accuracy: 0.8541666666666666
+Test F1: 0.5773
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 0
+ - total raw features: 936
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 975
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.81x
+[Val] ensemble AUPRC=0.67635
+[Val] best F1=0.6070 @ thr=0.6405
+[Test] AUPRC=0.67883  base_pos_rate=0.159, norm_AP=4.26x
+[Test] F1=0.6215 @ thr=0.6405
+[Test] Precision=0.7310
+[Test] Recall=0.5406
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6880 and accuracy: 0.8952083333333334
+Test F1: 0.6215
+================================================
+
+[SEARCH] Mean validation macro-AUPRC: 0.6828
+
+[SEARCH] Trial 4/5
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 0
+ - total raw features: 936
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 975
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.88x
+[Val] ensemble AUPRC=0.68920
+[Val] best F1=0.6320 @ thr=0.4344
+[Test] AUPRC=0.68411  base_pos_rate=0.159, norm_AP=4.30x
+[Test] F1=0.6132 @ thr=0.4344
+[Test] Precision=0.6557
+[Test] Recall=0.5759
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6919 and accuracy: 0.884375
+Test F1: 0.6132
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 0
+ - total raw features: 936
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 975
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.89x
+[Val] ensemble AUPRC=0.69022
+[Val] best F1=0.6274 @ thr=0.4661
+[Test] AUPRC=0.66286  base_pos_rate=0.159, norm_AP=4.16x
+[Test] F1=0.5951 @ thr=0.4661
+[Test] Precision=0.6678
+[Test] Recall=0.5366
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6685 and accuracy: 0.88375
+Test F1: 0.5951
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 0
+ - total raw features: 936
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 975
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.92x
+[Val] ensemble AUPRC=0.69600
+[Val] best F1=0.6320 @ thr=0.4527
+[Test] AUPRC=0.67099  base_pos_rate=0.159, norm_AP=4.22x
+[Test] F1=0.5957 @ thr=0.4527
+[Test] Precision=0.6263
+[Test] Recall=0.5681
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6819 and accuracy: 0.8772916666666667
+Test F1: 0.5957
+================================================
+
+[SEARCH] Mean validation macro-AUPRC: 0.6978
+
+[SEARCH] Trial 5/5
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 0
+ - total raw features: 936
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 975
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.99x
+[Val] ensemble AUPRC=0.70774
+[Val] best F1=0.6405 @ thr=0.3233
+[Test] AUPRC=0.66829  base_pos_rate=0.159, norm_AP=4.20x
+[Test] F1=0.5612 @ thr=0.3233
+[Test] Precision=0.5159
+[Test] Recall=0.6152
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6759 and accuracy: 0.846875
+Test F1: 0.5612
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 0
+ - total raw features: 936
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 975
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.84x
+[Val] ensemble AUPRC=0.68238
+[Val] best F1=0.6116 @ thr=0.3189
+[Test] AUPRC=0.68111  base_pos_rate=0.159, norm_AP=4.28x
+[Test] F1=0.5677 @ thr=0.3189
+[Test] Precision=0.5161
+[Test] Recall=0.6309
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6862 and accuracy: 0.8470833333333333
+Test F1: 0.5677
+================================================
+
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 0
+ - total raw features: 936
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 975
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.88x
+[Val] ensemble AUPRC=0.68789
+[Val] best F1=0.6098 @ thr=0.3121
+[Test] AUPRC=0.67144  base_pos_rate=0.159, norm_AP=4.22x
+[Test] F1=0.5532 @ thr=0.3121
+[Test] Precision=0.4857
+[Test] Recall=0.6427
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6804 and accuracy: 0.8347916666666667
+Test F1: 0.5532
+================================================
+
+[SEARCH] Mean validation macro-AUPRC: 0.7003
+[BEST] Validation macro-AUPRC: 0.7022
+[BEST] Params: {'tree_method': 'hist', 'max_bin': 512, 'lambda': 1.0, 'alpha': 0.0, 'objective': 'binary:logistic', 'eval_metric': 'aucpr', 'verbosity': 0, 'eta': 0.05, 'max_depth': 8, 'subsample': 0.8, 'colsample_bytree': 1.0, 'min_child_weight': 1, 'gamma': 0.0}
+
+[FINAL] Refit 1/1 with training seed 0
+[Split] pos_rate train=0.129  val=0.177  test=0.159
+
+[FEATURE SUMMARY BEFORE PREPROCESSING]
+ - categorical: 1
+ - mole: 935
+ - chemdesc: 0
+ - gpt: 0
+ - total raw features: 936
+
+[FEATURE SUMMARY AFTER PREPROCESSING]
+ - transformed feature count sent to XGBoost: 975
+ - first 20 transformed features:
+['cat__bacterium_Akkermansia muciniphila (NT5021)', 'cat__bacterium_Bacteroides caccae (NT5050)', 'cat__bacterium_Bacteroides fragilis (ET) (NT5033)', 'cat__bacterium_Bacteroides fragilis (NT) (NT5003)', 'cat__bacterium_Bacteroides ovatus (NT5054)', 'cat__bacterium_Bacteroides thetaiotaomicron (NT5004)', 'cat__bacterium_Bacteroides uniformis (NT5002)', 'cat__bacterium_Bacteroides vulgatus (NT5001)', 'cat__bacterium_Bacteroides xylanisolvens (NT5064)', 'cat__bacterium_Bifidobacterium adolescentis (NT5022)', 'cat__bacterium_Bifidobacterium longum (NT5028)', 'cat__bacterium_Bilophila wadsworthia (NT5036)', 'cat__bacterium_Blautia obeum (NT5069)', 'cat__bacterium_Clostridium bolteae (NT5026)', 'cat__bacterium_Clostridium difficile (NT5083)', 'cat__bacterium_Clostridium perfringens (NT5032)', 'cat__bacterium_Clostridium ramosum (NT5006)', 'cat__bacterium_Clostridium saccharolyticum (NT5037)', 'cat__bacterium_Collinsella aerofaciens (NT5073)', 'cat__bacterium_Coprococcus comes (NT5048)']
+[Val] base_pos_rate=0.177, norm_AP=3.90x
+[Val] ensemble AUPRC=0.69202
+[Val] best F1=0.6305 @ thr=0.0987
+[Test] AUPRC=0.67791  base_pos_rate=0.159, norm_AP=4.26x
+[Test] F1=0.5830 @ thr=0.0987
+[Test] Precision=0.5627
+[Test] Recall=0.6047
+
+================ PAPER METRIC ================
+Mean per-strain AUPRC (paper-style): 0.6842 and accuracy: 0.8622916666666667
+Test F1: 0.5830
+================================================
+
+[FINAL] Test macro-AUPRC: 0.6842474897200231
+ - Saved per-seed metrics: results/table1_trials/trial_0/mole_only/seed_metrics_mole_only.csv
+ - Saved summary metrics: results/table1_trials/trial_0/mole_only/summary_metrics_mole_only.json
+[6b] Saving exact feature lists used by XGBoost...
+ - Saved raw feature list: results/table1_trials/trial_0/mole_only/raw_features_used_mole_only.csv
+ - Saved transformed XGBoost feature list: results/table1_trials/trial_0/mole_only/xgb_transformed_features_mole_only.csv
+[7] Extracting feature importances...
+
+Top 20 important features (all types):
+       feature_name  importance
+227  mole__mole_228  882.403320
+93    mole__mole_68  495.426605
+255  mole__mole_261  440.608124
+116   mole__mole_94  364.212891
+76    mole__mole_46  240.231171
+146  mole__mole_130  186.734619
+301  mole__mole_312  184.158203
+265  mole__mole_271  132.842026
+489  mole__mole_514  102.553497
+175  mole__mole_170   98.265274
+189  mole__mole_186   89.176476
+769  mole__mole_833   84.785652
+359  mole__mole_373   83.872498
+236  mole__mole_237   78.845734
+419  mole__mole_439   74.821877
+426  mole__mole_447   73.456253
+218  mole__mole_218   71.784256
+380  mole__mole_398   69.340416
+254  mole__mole_260   66.137566
+58    mole__mole_20   65.748978
+ - Saved: results/table1_trials/trial_0/mole_only/test_predictions_mole_only.csv
+Formatting predictions in MolE paper-style output...
+ - Saved paper-style predictions: results/table1_trials/trial_0/mole_only/paper_style_predictions_mole_only.csv
+ - Saved: results/table1_trials/trial_0/mole_only/per_strain_metrics_mole_only.csv
+ - Model saved: results/table1_trials/trial_0/mole_only/xgb_model_mole_only.pkl
+
+[Done]
