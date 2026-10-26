@@ -439,11 +439,48 @@ BASE_PARAMS = {
 }
 
 
+XGB_DEVICE = "cpu"  # set from --device in main()
+
+
 def sample_params():
     p = BASE_PARAMS.copy()
     for k, v in PARAM_SPACE.items():
         p[k] = random.choice(v)
     return p
+
+
+# One configuration shared by every representation, so a row's score reflects its
+# features rather than how lucky its own hyperparameter search was.  Chosen a
+# priori rather than tuned on any row, and every value is a member of
+# PARAM_SPACE above, so this is a point the paper's own search could have picked.
+#
+# subsample and colsample_bytree are deliberately below 1.0: with both at 1.0 the
+# hist tree builder is deterministic and the spread across seeds would be zero by
+# construction rather than by evidence.
+SHARED_PARAMS = {
+    **BASE_PARAMS,
+    "eta": 0.05,
+    "max_depth": 5,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "min_child_weight": 1,
+    "gamma": 0.0,
+}
+
+
+def resolve_fixed_params(spec: str) -> dict:
+    """Parse --fixed_params: the literal 'shared', or a JSON object of overrides."""
+    if spec.strip() == "shared":
+        return dict(SHARED_PARAMS)
+    try:
+        overrides = json.loads(spec)
+    except json.JSONDecodeError as exc:
+        raise ValueError(
+            f"--fixed_params must be 'shared' or a JSON object; got {spec!r}"
+        ) from exc
+    if not isinstance(overrides, dict):
+        raise ValueError("--fixed_params JSON must be an object of parameter overrides.")
+    return {**BASE_PARAMS, **overrides}
 
 
 # -------------------- TRAIN --------------------
@@ -559,6 +596,9 @@ def train_xgb(joined: pd.DataFrame, params: dict, random_state: int = 42):
     # Without this the random_state argument never reaches XGBoost, so every
     # "seed" refits the identical model and any spread across seeds is zero.
     params["seed"] = int(random_state)
+    # "cuda" trains on the GPU (xgboost >= 2). GPU and CPU hist do not give
+    # bit-identical models, so every run compared in one table must share a device.
+    params["device"] = XGB_DEVICE
 
     dtr  = xgb.DMatrix(X_tr,  label=y_tr)
     dval = xgb.DMatrix(X_val, label=y_val)
@@ -804,6 +844,14 @@ def parse_args():
     ap.add_argument("--pval_cutoff", type=float, default=0.05, help="P-value cutoff for labels.")
     ap.add_argument("--output_dir", required=True, help="Directory to write outputs.")
     ap.add_argument("--random_state", type=int, default=42, help="Random state.")
+    ap.add_argument("--device", default="cpu", choices=["cpu", "cuda"],
+                    help="XGBoost device. Use 'cuda' on a GPU machine such as Kaggle.")
+    ap.add_argument("--fixed_params", default=None,
+                    help="Skip the per-row hyperparameter search and train one configuration "
+                         "shared by every representation. Pass 'shared' for the documented "
+                         "a priori configuration, or a JSON object of overrides. Without this, "
+                         "each row runs its own random search, so a row's score reflects its "
+                         "own search luck as well as its features.")
     ap.add_argument("--skip_intermediate_dumps", action="store_true",
                     help="Do not write the large regenerable intermediates "
                          "(compound_features_combined_*.csv and "
@@ -856,6 +904,8 @@ def parse_args():
 
 def main():
     args = parse_args()
+    global XGB_DEVICE
+    XGB_DEVICE = args.device
     os.makedirs(args.output_dir, exist_ok=True)
 
     print("[1] Loading SF3 and building binary labels.")
@@ -1075,31 +1125,37 @@ def main():
     N_TRIALS = 5
     SEEDS = [0, 1, 2]
 
-    best_val = -1
-    best_params = None
+    if args.fixed_params:
+        best_params = resolve_fixed_params(args.fixed_params)
+        best_val = float("nan")
+        print("[SEARCH] Skipped: training one shared configuration across all rows.")
+        print(f"[SEARCH] Params: {best_params}")
+    else:
+        best_val = -1
+        best_params = None
 
-    for trial in range(N_TRIALS):
-        print(f"\n[SEARCH] Trial {trial+1}/{N_TRIALS}")
-        params = sample_params()
-        val_scores = []
+        for trial in range(N_TRIALS):
+            print(f"\n[SEARCH] Trial {trial+1}/{N_TRIALS}")
+            params = sample_params()
+            val_scores = []
 
-        for seed in SEEDS:
-            _, summary, _, _, _, _, _ = train_xgb(
-                joined,
-                params=params,
-                random_state=seed
-            )
-            val_scores.append(summary["val_macro_pr_auc_by_strain"])
+            for seed in SEEDS:
+                _, summary, _, _, _, _, _ = train_xgb(
+                    joined,
+                    params=params,
+                    random_state=seed
+                )
+                val_scores.append(summary["val_macro_pr_auc_by_strain"])
 
-        mean_val = float(np.mean(val_scores))
-        print(f"[SEARCH] Mean validation macro-AUPRC: {mean_val:.4f}")
+            mean_val = float(np.mean(val_scores))
+            print(f"[SEARCH] Mean validation macro-AUPRC: {mean_val:.4f}")
 
-        if mean_val > best_val:
-            best_val = mean_val
-            best_params = params
+            if mean_val > best_val:
+                best_val = mean_val
+                best_params = params
 
-    print(f"[BEST] Validation macro-AUPRC: {best_val:.4f}")
-    print(f"[BEST] Params: {best_params}")
+        print(f"[BEST] Validation macro-AUPRC: {best_val:.4f}")
+        print(f"[BEST] Params: {best_params}")
 
     # Refit the selected configuration once per test seed.  The first seed supplies
     # the artifacts saved below, so a single seed reproduces the original behaviour.

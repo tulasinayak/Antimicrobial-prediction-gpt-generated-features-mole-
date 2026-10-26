@@ -60,3 +60,6 @@ Thumbs.db
 
 # Scratch dir for child-process temp during Table 1 runs
 results/table1/_tmp/
+
+# Kaggle upload bundle (rebuild with kaggle/build_bundle.py)
+kaggle/*.zip

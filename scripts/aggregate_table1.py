@@ -7,6 +7,7 @@ directory, metric and commit that produced it).
 
 from __future__ import annotations
 
+import argparse
 import glob
 import json
 import os
@@ -50,68 +51,104 @@ def git_commit() -> str:
         return "unknown"
 
 
-def load_row(row_dir: str) -> pd.DataFrame | None:
-    hits = glob.glob(os.path.join(row_dir, "seed_metrics_*.csv"))
-    if not hits:
+def best_params_of(row_dir: str) -> str:
+    meta_path = glob.glob(os.path.join(row_dir, "summary_metrics_*[!0-9].json"))
+    if not meta_path:
+        return ""
+    with open(meta_path[0]) as fh:
+        return json.dumps(json.load(fh).get("best_params", {}))
+
+
+def load_row(out_root: str, row: str) -> tuple[pd.DataFrame, list[str]] | None:
+    """Per-run metrics for one row, plus the run directories they came from.
+
+    Seed runs (run_table1.py --seeds) keep every seed in one seed_metrics CSV.
+    Trial runs (run_table1.py --trials) keep one run per <out_root>/trial_<k>/<row>;
+    those are stacked, one line per trial.
+    """
+    trial_dirs = sorted(glob.glob(os.path.join(out_root, "trial_*", row)))
+    dirs = trial_dirs or [os.path.join(out_root, row)]
+
+    frames, used = [], []
+    for d in dirs:
+        hits = glob.glob(os.path.join(d, "seed_metrics_*.csv"))
+        if not hits:
+            continue
+        df = pd.read_csv(hits[0])
+        if trial_dirs:
+            df.insert(0, "trial", os.path.basename(os.path.dirname(d)))
+        frames.append(df)
+        used.append(d)
+    if not frames:
         return None
-    return pd.read_csv(hits[0])
+    return pd.concat(frames, ignore_index=True), used
+
+
+def mean_sd(s: pd.Series) -> tuple[float, float | str]:
+    return round(s.mean(), 4), (round(s.std(ddof=1), 4) if len(s) > 1 else "")
 
 
 def main() -> None:
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--root", default=OUT_ROOT,
+                    help=f"Run directory written by run_table1.py (default: {OUT_ROOT}).")
+    out_root = ap.parse_args().root
+
     commit = git_commit()
     summary_rows, manifest_rows = [], []
 
     for row, label in ROW_ORDER:
-        row_dir = os.path.join(OUT_ROOT, row)
-        seeds = load_row(row_dir)
-        if seeds is None:
+        loaded = load_row(out_root, row)
+        if loaded is None:
             continue
+        runs, dirs = loaded
 
-        primary, secondary = seeds[PRIMARY], seeds[SECONDARY]
-        sd = primary.std(ddof=1) if len(primary) > 1 else float("nan")
+        primary, secondary = runs[PRIMARY], runs[SECONDARY]
+        val = runs["val_macro_pr_auc_by_strain"]
 
         summary_rows.append({
             "row": label,
-            "n_seeds": len(seeds),
-            "test_pr_auc_mean": round(primary.mean(), 4),
-            "test_pr_auc_sd": round(sd, 4) if len(primary) > 1 else "",
+            "n_runs": len(runs),
+            "val_pr_auc_mean": mean_sd(val)[0],
+            "val_pr_auc_sd": mean_sd(val)[1],
+            "test_pr_auc_mean": mean_sd(primary)[0],
+            "test_pr_auc_sd": mean_sd(primary)[1],
             "test_pr_auc_min": round(primary.min(), 4),
             "test_pr_auc_max": round(primary.max(), 4),
-            "test_pooled_pr_auc_mean": round(secondary.mean(), 4),
-            "test_f1_mean": round(seeds["f1"].mean(), 4),
-            "accuracy_mean": round(100 * seeds["accuracy"].mean(), 2),
-            "n_test_pairs": int(seeds["n_test"].iloc[0]),
-            "n_features": int(seeds["n_features"].iloc[0]),
+            "test_pooled_pr_auc_mean": mean_sd(secondary)[0],
+            "test_pooled_pr_auc_sd": mean_sd(secondary)[1],
+            "test_f1_mean": round(runs["f1"].mean(), 4),
+            "accuracy_mean": round(100 * runs["accuracy"].mean(), 2),
+            "n_test_pairs": int(runs["n_test"].iloc[0]),
+            "n_features": int(runs["n_features"].iloc[0]),
         })
 
-        meta_path = glob.glob(os.path.join(row_dir, "summary_metrics_*[!0-9].json"))
-        best_params = ""
-        if meta_path:
-            with open(meta_path[0]) as fh:
-                best_params = json.dumps(json.load(fh).get("best_params", {}))
-
-        manifest_rows.append({
-            "row": label,
-            "run_dir": row_dir.replace(os.sep, "/"),
-            "primary_metric": "mean per-strain test PR-AUC",
-            "seeds": ",".join(str(s) for s in seeds["seed"].tolist()),
-            "commit": commit,
-            "best_params": best_params,
-        })
+        for d, (_, r) in zip(dirs if "trial" in runs else dirs * len(runs), runs.iterrows()):
+            manifest_rows.append({
+                "row": label,
+                "run_dir": d.replace(os.sep, "/"),
+                "trial": r.get("trial", ""),
+                "seed": int(r["seed"]),
+                "val_pr_auc": r["val_macro_pr_auc_by_strain"],
+                "test_pr_auc": r[PRIMARY],
+                "test_pooled_pr_auc": r[SECONDARY],
+                "commit": commit,
+                "best_params": best_params_of(d),
+            })
 
     if not summary_rows:
-        print(f"No completed rows found under {OUT_ROOT}/. Run scripts/run_table1.py first.")
+        print(f"No completed rows found under {out_root}/. Run scripts/run_table1.py first.")
         return
 
     table = pd.DataFrame(summary_rows)
     manifest = pd.DataFrame(manifest_rows)
 
-    table.to_csv(os.path.join(OUT_ROOT, "table1.csv"), index=False)
-    manifest.to_csv(os.path.join(OUT_ROOT, "RESULTS_MANIFEST.csv"), index=False)
+    table.to_csv(os.path.join(out_root, "table1.csv"), index=False)
+    manifest.to_csv(os.path.join(out_root, "RESULTS_MANIFEST.csv"), index=False)
 
-    pd.set_option("display.width", 220)
+    pd.set_option("display.width", 240)
     print(table.to_string(index=False))
-    print(f"\nWrote {OUT_ROOT}/table1.csv and {OUT_ROOT}/RESULTS_MANIFEST.csv")
+    print(f"\nWrote {out_root}/table1.csv and {out_root}/RESULTS_MANIFEST.csv")
 
 
 if __name__ == "__main__":

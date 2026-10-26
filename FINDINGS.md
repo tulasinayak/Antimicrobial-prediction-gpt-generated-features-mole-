@@ -64,6 +64,23 @@ attributable to: only 935 of 1000 MolE dimensions surviving the constant-column 
 a 5-trial random search against MolE's broader one, and MolE's F1-optimal 0.044 cutoff
 being carried over rather than re-derived.
 
+**MolE's 0.7797 reproduced** (`scripts/reproduce_mole_original.py`). MolE's committed
+`strain_performance.tsv.gz` shows their search was 5 configs x 5 fits, unseeded, over
+n_estimators {30..1000} x max_depth {5,10,50,100} x eta x subsample. The winner was
+`n_estimators=1000, max_depth=100, eta=0.1, subsample=1.0`, a depth our search space
+(max_depth <= 10) cannot reach. Trained exactly their way (raw 1000-d features, no early
+stopping, no class weighting, no scaling) on identical inputs:
+
+| tree_method | val PR-AUC | test PR-AUC | r vs published per-pair probabilities |
+|---|---|---|---|
+| exact (xgboost 1.6.2's default here) | 0.7021 | **0.7802** | 0.998 |
+| hist (xgboost >= 2 default) | 0.6905 | 0.7655 | 0.968 |
+| published | 0.7010 | 0.7798 | - |
+
+So the gap is a protocol difference (search space, fixed rounds, tree method), not a data or
+split difference. Their other four configs scored test 0.56-0.80 with validation 0.54-0.68:
+on this 120-compound test set, the configuration alone moves test PR-AUC by about 0.2.
+
 **Consequence:** MolE alone (0.7231) ties the best GPT configuration (0.7233), and
 RDKit alone (0.7156) beats five of six. *(pending: seed spreads)*
 
