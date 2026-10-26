@@ -25,6 +25,8 @@ SCRIPTS = [
     "notebooks/build_train.py",
     "scripts/run_table1.py",
     "scripts/aggregate_table1.py",
+    "scripts/reproduce_mole_original.py",
+    "scripts/run_mole_method.py",
 ]
 OUT = "kaggle/gpt_mole_bundle.zip"
 TOP = "gpt_mole"

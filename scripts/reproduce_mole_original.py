@@ -47,6 +47,8 @@ from xgboost import XGBClassifier
 
 RAW = "data/raw_data"
 MOLE_TSV = f"{RAW}/maier_mole_representation_with_id.tsv.gz"
+CHEMDESC_TSV = f"{RAW}/maier_chemdesc_representation.tsv"
+GPT_DIR = "data/gpt_generation_without_guidance"
 SPLIT_TSV = f"{RAW}/maier_scaffold_split.tsv"
 SF3 = f"{RAW}/screen_results_info_SF3.xlsx"
 
@@ -89,6 +91,26 @@ def get_split(features: pd.DataFrame, labels: pd.DataFrame, split: pd.Series):
     return out
 
 
+def load_block(name: str) -> pd.DataFrame:
+    """One feature block indexed by prestwick_ID: mole, chemdesc, or gpt:<model>."""
+    if name == "mole":
+        df = pd.read_csv(MOLE_TSV, sep="\t").set_index("prestwick_ID")
+        return df[[str(i) for i in range(1000)]].add_prefix("mole_")
+    if name == "chemdesc":
+        # The same 98 descriptors as MolE's maier_chemdesc_representation.tsv.gz.
+        df = pd.read_csv(CHEMDESC_TSV, sep="\t").set_index("prestwick_ID")
+        return df[~df.index.duplicated()]
+    if name.startswith("gpt:"):
+        model = name.split(":", 1)[1]
+        hits = [f for f in os.listdir(GPT_DIR) if f.endswith(f"_{model}_freeform.csv")]
+        if len(hits) != 1:
+            raise ValueError(f"expected one free-form file for {model} in {GPT_DIR}, found {hits}")
+        df = pd.read_csv(os.path.join(GPT_DIR, hits[0])).set_index("prestwick_ID")
+        # Numeric descriptors only; metadata such as ProductName or input is text.
+        return df.select_dtypes(include="number").add_prefix("gpt_")
+    raise ValueError(f"unknown feature block {name!r}; use mole, chemdesc or gpt:<model>")
+
+
 def metrics(y: np.ndarray, p: np.ndarray) -> dict:
     precision, recall, _ = precision_recall_curve(y, p)
     return {"prauc_trapz": float(auc(recall, precision)),
@@ -99,8 +121,15 @@ def metrics(y: np.ndarray, p: np.ndarray) -> dict:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--features", default="mole",
+                    help="Comma-separated feature blocks joined on prestwick_ID: mole, chemdesc, "
+                         "gpt:<model> (e.g. gpt:gpt-5.2). Default mole reproduces the paper.")
     ap.add_argument("--tree_method", default="exact", choices=["exact", "hist", "approx"],
                     help="exact matches xgboost 1.6.2's default for this data size.")
+    ap.add_argument("--device", default="cpu", choices=["cpu", "cuda"],
+                    help="cuda trains on the GPU; it supports hist only, not exact.")
+    ap.add_argument("--skip_existing", action="store_true",
+                    help="Do nothing if this run's summary JSON already exists.")
     ap.add_argument("--seed", type=int, default=1234,
                     help="MolE's final refit used random_state=1234 (irrelevant at subsample=1).")
     ap.add_argument("--nthread", type=int, default=os.cpu_count())
@@ -110,10 +139,20 @@ def main() -> int:
     args = ap.parse_args()
 
     os.makedirs(args.output_dir, exist_ok=True)
-    tag = f"{args.tree_method}_xgb{xgboost.__version__}"
+    blocks = [b.strip() for b in args.features.split(",") if b.strip()]
+    if args.device == "cuda" and args.tree_method != "hist":
+        ap.error("--device cuda needs --tree_method hist (xgboost has no GPU exact method)")
+    device = "" if args.device == "cpu" else f"_{args.device}"
+    tag = (f"{'+'.join(b.replace(':', '-') for b in blocks)}_{args.tree_method}{device}"
+           f"_xgb{xgboost.__version__}")
+    summary_path = os.path.join(args.output_dir, f"summary_{tag}.json")
+    if args.skip_existing and os.path.exists(summary_path):
+        print(f"{summary_path} exists, skipping")
+        return 0
 
-    features = pd.read_csv(MOLE_TSV, sep="\t").set_index("prestwick_ID")
-    features = features[[str(i) for i in range(1000)]]
+    # Left-join on the MolE/screen compound order; missing values become 0 in get_split,
+    # as in MolE's pipeline.
+    features = pd.concat([load_block(b) for b in blocks], axis=1, join="outer")
     labels = load_labels(SF3)
     split = pd.read_csv(SPLIT_TSV, sep="\t", index_col="prestwick_ID")["split"]
     data = get_split(features, labels, split)
@@ -122,14 +161,16 @@ def main() -> int:
           f"xgboost {xgboost.__version__}, tree_method={args.tree_method}", flush=True)
 
     model = XGBClassifier(**MOLE_BEST, tree_method=args.tree_method, base_score=0.5,
-                          random_state=args.seed, n_jobs=args.nthread)
+                          device=args.device, random_state=args.seed, n_jobs=args.nthread)
     started = time.time()
     model.fit(X_tr, y_tr)
     minutes = (time.time() - started) / 60
     print(f"fit in {minutes:.1f} min", flush=True)
 
-    result = {"xgboost": xgboost.__version__, "tree_method": args.tree_method,
-              "params": MOLE_BEST, "fit_minutes": minutes, "published": PUBLISHED}
+    result = {"features": blocks, "n_features": int(X_tr.shape[1]),
+              "xgboost": xgboost.__version__, "tree_method": args.tree_method,
+              "device": args.device,
+              "params": MOLE_BEST, "fit_minutes": minutes, "published_mole_only": PUBLISHED}
     for name in ("valid", "test"):
         X, y, keys = data[name]
         p = model.predict_proba(X)[:, 1]
@@ -141,7 +182,8 @@ def main() -> int:
             preds = keys.assign(y_true=y, proba=p)
             preds.to_csv(os.path.join(args.output_dir, f"test_predictions_{tag}.csv"), index=False)
 
-    print(f"published: valid {PUBLISHED['validation_prauc']:.4f}  test {PUBLISHED['test_prauc']:.4f}")
+    if blocks == ["mole"]:
+        print(f"published: valid {PUBLISHED['validation_prauc']:.4f}  test {PUBLISHED['test_prauc']:.4f}")
 
     if args.compare_predictions:
         theirs = pd.read_csv(args.compare_predictions, sep="\t")
@@ -156,7 +198,7 @@ def main() -> int:
         }
         print("vs published predictions:", result["vs_published_predictions"])
 
-    with open(os.path.join(args.output_dir, f"summary_{tag}.json"), "w") as f:
+    with open(summary_path, "w") as f:
         json.dump(result, f, indent=2)
     return 0
 
