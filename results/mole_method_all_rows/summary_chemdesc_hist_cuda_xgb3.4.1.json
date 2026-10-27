@@ -1,0 +1,31 @@
+{
+  "features": [
+    "chemdesc"
+  ],
+  "n_features": 138,
+  "xgboost": "3.4.1",
+  "tree_method": "hist",
+  "device": "cuda",
+  "params": {
+    "n_estimators": 1000,
+    "max_depth": 100,
+    "eta": 0.1,
+    "subsample": 1.0,
+    "objective": "binary:logistic"
+  },
+  "fit_minutes": 0.23570990959803265,
+  "published_mole_only": {
+    "validation_prauc": 0.7009655554019908,
+    "test_prauc": 0.7797609717204966
+  },
+  "valid": {
+    "prauc_trapz": 0.6612572796123813,
+    "average_precision": 0.6614912034251772,
+    "roc_auc": 0.8604496363523935
+  },
+  "test": {
+    "prauc_trapz": 0.7145512966182601,
+    "average_precision": 0.714688184158263,
+    "roc_auc": 0.8756962857839653
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "features": [
+    "mole",
+    "gpt:gpt-5.1"
+  ],
+  "n_features": 1549,
+  "xgboost": "3.4.1",
+  "tree_method": "hist",
+  "device": "cuda",
+  "params": {
+    "n_estimators": 1000,
+    "max_depth": 100,
+    "eta": 0.1,
+    "subsample": 1.0,
+    "objective": "binary:logistic"
+  },
+  "fit_minutes": 1.7469180305798848,
+  "published_mole_only": {
+    "validation_prauc": 0.7009655554019908,
+    "test_prauc": 0.7797609717204966
+  },
+  "valid": {
+    "prauc_trapz": 0.72621092105808,
+    "average_precision": 0.7263342940312669,
+    "roc_auc": 0.8701294647316523
+  },
+  "test": {
+    "prauc_trapz": 0.6243498536262105,
+    "average_precision": 0.6245555646552321,
+    "roc_auc": 0.8397637882097769
+  }
+}

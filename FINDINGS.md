@@ -114,6 +114,36 @@ Paired by trial (per-strain test, n = 5):
   used for early stopping, threshold and config selection, so it is optimistic, most of all
   for the largest feature set (GPT-5.1, 1481 features).
 
+## 3c. Every row trained with MolE's recipe (Kaggle GPU)
+
+`scripts/run_mole_method.py --tree_method hist --device cuda` (xgboost 3.4.1): every row gets
+MolE's selected configuration (1000 trees, depth 100, eta 0.1, subsample 1.0, raw features,
+no early stopping, no class weighting). The configuration is deterministic, so the 95% CIs
+come from 1000 compound-level bootstrap resamples of the 120 test compounds, shared by all
+rows so differences against MolE are paired. Results: `results/mole_method_all_rows/`.
+
+| Representation | Val PR-AUC | Test PR-AUC | Test 95% CI | Diff vs MolE [95% CI] |
+|---|---|---|---|---|
+| MolE | 0.6960 | **0.7527** | [0.609, 0.849] | - |
+| RDKit descriptors | 0.6613 | 0.7146 | [0.562, 0.835] | -0.037 [-0.098, +0.017] |
+| MolE + RDKit | 0.6972 | 0.7263 | [0.576, 0.835] | -0.026 [-0.066, +0.010] |
+| MolE + GPT-4o | 0.6845 | 0.7301 | [0.580, 0.837] | -0.022 [-0.062, +0.010] |
+| MolE + GPT-4o-mini | 0.6956 | 0.7436 | [0.595, 0.848] | -0.009 [-0.033, +0.012] |
+| MolE + GPT-4.1 | 0.6589 | 0.7033 | [0.549, 0.820] | -0.050 [-0.122, +0.014] |
+| MolE + GPT-4.1-mini | 0.6993 | 0.7428 | [0.598, 0.850] | -0.009 [-0.037, +0.016] |
+| MolE + GPT-5.1 | 0.7262 | 0.6243 | [0.463, 0.759] | **-0.126 [-0.213, -0.056]** |
+| MolE + GPT-5.2 | 0.6744 | 0.7331 | [0.592, 0.838] | -0.019 [-0.059, +0.022] |
+
+- Under MolE's recipe nothing beats MolE alone; every difference except GPT-5.1's has a CI
+  containing 0. GPT-5.1 is clearly worse, as in the 5-trial run.
+- This recipe favours MolE by construction: the configuration was chosen on MolE's own
+  validation set. A per-row search over MolE's space would be the fair version.
+- A single deterministic fit is fragile across implementations. MolE alone: exact CPU 0.7802,
+  hist CPU 0.7655, hist GPU 0.7527. MolE + RDKit: hist CPU 0.7470 vs hist GPU 0.7263. These
+  shifts (0.013-0.03) are the size of the differences between rows.
+- Test CIs are about +/-0.12 wide for every row: 120 test compounds cannot separate
+  representations that differ by 0.01-0.05.
+
 ## 4. External MIC validation: GPT does not improve attribution
 
 `scripts/ap_g_comparison.py`. Supplementary Table 10 already carries the published MolE
