@@ -10,6 +10,10 @@ Rows produced:
   mole_plus_rdkit      MolE + descriptors   <- missing from the submission entirely
   mole_plus_<model>    MolE + each of the six free-form GPT feature sets
   gpt_only_<model>     each GPT feature set alone (with --include-gpt-only)
+  mole_plus_guided_<model> / guided_only_<model>
+                       guided (schema-constrained) GPT features with and without MolE
+                       (with --include-guided; inputs from scripts/flatten_guided.py)
+  --only-extra         run only the GPT-only / guided rows, not the 9 main rows
 
 Usage:
     python scripts/run_table1.py --dry-run
@@ -43,14 +47,47 @@ FREEFORM = {
     "gpt-5.2":       "data/gpt_generation_without_guidance/gpt_features5_gpt-5.2_freeform.csv",
 }
 
+GUIDED = {m: f"data/gpt_guided_flat/gpt_features_guided_{m}.csv" for m in FREEFORM}
+
 OUT_ROOT = "results/table1"
 DEVICE = "cpu"  # set from --device in main()
 # Each run keeps a model plus per-seed predictions; budget generously.
 MIN_FREE_GB = 5.0
 
 
-def build_rows(include_gpt_only: bool) -> list[tuple[str, list[str]]]:
+def build_rows(include_gpt_only: bool, include_guided: bool = False,
+               only_extra: bool = False) -> list[tuple[str, list[str]]]:
     """Return (row_name, extra build_train.py arguments) for every Table 1 row."""
+    rows = [] if only_extra else main_rows()
+
+    if include_gpt_only:
+        for model, csv in FREEFORM.items():
+            rows.append((f"gpt_only_{model}", [
+                "--feature_mode", "gpt_only",
+                "--gpt_features", csv,
+                "--prestwick_screened", PRESTWICK,
+            ]))
+
+    if include_guided:
+        for model, csv in GUIDED.items():
+            rows.append((f"mole_plus_guided_{model}", [
+                "--feature_mode", "mole_plus_gpt",
+                "--gpt_features", csv,
+                "--mole_mode", "load", "--mole_tsv", MOLE,
+                "--prestwick_screened", PRESTWICK,
+            ]))
+        for model, csv in GUIDED.items():
+            rows.append((f"guided_only_{model}", [
+                "--feature_mode", "gpt_only",
+                "--gpt_features", csv,
+                "--prestwick_screened", PRESTWICK,
+            ]))
+
+    return rows
+
+
+def main_rows() -> list[tuple[str, list[str]]]:
+    """The 9 rows of the main table."""
     rows: list[tuple[str, list[str]]] = [
         ("mole_only", [
             "--feature_mode", "mole_only",
@@ -76,14 +113,6 @@ def build_rows(include_gpt_only: bool) -> list[tuple[str, list[str]]]:
             "--mole_mode", "load", "--mole_tsv", MOLE,
             "--prestwick_screened", PRESTWICK,
         ]))
-
-    if include_gpt_only:
-        for model, csv in FREEFORM.items():
-            rows.append((f"gpt_only_{model}", [
-                "--feature_mode", "gpt_only",
-                "--gpt_features", csv,
-                "--prestwick_screened", PRESTWICK,
-            ]))
 
     return rows
 
@@ -141,8 +170,10 @@ def is_complete(out_dir: str) -> bool:
         for f in os.listdir(out_dir))
 
 
-def check_inputs() -> list[str]:
+def check_inputs(include_guided: bool = False) -> list[str]:
     needed = [SF3, SPLIT, MOLE, PRESTWICK, CHEMDESC, *FREEFORM.values()]
+    if include_guided:
+        needed += list(GUIDED.values())
     return [p for p in needed if not os.path.exists(p)]
 
 
@@ -159,6 +190,11 @@ def main() -> int:
                     help="Comma-separated subset of row names to run.")
     ap.add_argument("--include-gpt-only", action="store_true",
                     help="Also run the GPT-only ablations (six extra rows).")
+    ap.add_argument("--include-guided", action="store_true",
+                    help="Also run MolE + guided and guided-only rows (twelve extra rows); "
+                         "build their inputs first with scripts/flatten_guided.py.")
+    ap.add_argument("--only-extra", action="store_true",
+                    help="Skip the 9 main rows and run only the GPT-only / guided rows requested.")
     ap.add_argument("--dry-run", action="store_true",
                     help="Print the commands without running anything.")
     ap.add_argument("--fixed-params", default=None,
@@ -183,14 +219,14 @@ def main() -> int:
     global DEVICE
     DEVICE = args.device
 
-    missing = check_inputs()
+    missing = check_inputs(args.include_guided)
     if missing:
         print("Missing required input files:")
         for m in missing:
             print(f"  {m}")
         return 1
 
-    rows = build_rows(args.include_gpt_only)
+    rows = build_rows(args.include_gpt_only, args.include_guided, args.only_extra)
     if args.only:
         wanted = {s.strip() for s in args.only.split(",")}
         unknown = wanted - {r for r, _ in rows}

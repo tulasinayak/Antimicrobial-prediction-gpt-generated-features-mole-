@@ -34,6 +34,12 @@ ROW_ORDER = [
     ("gpt_only_gpt-4.1-mini", "GPT-4.1-mini only"),
     ("gpt_only_gpt-5.1", "GPT-5.1 only"),
     ("gpt_only_gpt-5.2", "GPT-5.2 only"),
+    *[(f"mole_plus_guided_{m}", f"MolE + {lab} (guided)") for m, lab in (
+        ("gpt-4o-mini", "GPT-4o-mini"), ("gpt-4.1-mini", "GPT-4.1-mini"), ("gpt-4o", "GPT-4o"),
+        ("gpt-4.1", "GPT-4.1"), ("gpt-5.1", "GPT-5.1"), ("gpt-5.2", "GPT-5.2"))],
+    *[(f"guided_only_{m}", f"{lab} only (guided)") for m, lab in (
+        ("gpt-4o-mini", "GPT-4o-mini"), ("gpt-4.1-mini", "GPT-4.1-mini"), ("gpt-4o", "GPT-4o"),
+        ("gpt-4.1", "GPT-4.1"), ("gpt-5.1", "GPT-5.1"), ("gpt-5.2", "GPT-5.2"))],
 ]
 
 # The primary metric. Mean per-strain PR-AUC, matching how MolE report per-strain

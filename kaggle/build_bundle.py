@@ -27,6 +27,8 @@ SCRIPTS = [
     "scripts/aggregate_table1.py",
     "scripts/reproduce_mole_original.py",
     "scripts/run_mole_method.py",
+    "scripts/run_mole_protocol_search.py",
+    "scripts/flatten_guided.py",
 ]
 OUT = "kaggle/gpt_mole_bundle.zip"
 TOP = "gpt_mole"
@@ -39,7 +41,7 @@ def sha256(path: str) -> str:
 
 def main() -> int:
     inputs = [run_table1.SF3, run_table1.SPLIT, run_table1.MOLE, run_table1.PRESTWICK,
-              run_table1.CHEMDESC, *run_table1.FREEFORM.values()]
+              run_table1.CHEMDESC, *run_table1.FREEFORM.values(), *run_table1.GUIDED.values()]
     files = inputs + SCRIPTS
 
     missing = [f for f in files if not os.path.exists(f)]
