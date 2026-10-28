@@ -63,3 +63,9 @@ results/table1/_tmp/
 
 # Kaggle upload bundle (rebuild with kaggle/build_bundle.py)
 kaggle/*.zip
+
+# Full Kaggle trial outputs incl. models (large; regenerate with run_table1.py --trials)
+results/table1_trials_full/
+
+# Built by revision_outputs/scripts/assemble.py
+revision_outputs.zip
