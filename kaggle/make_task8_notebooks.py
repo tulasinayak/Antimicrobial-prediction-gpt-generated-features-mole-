@@ -9,8 +9,9 @@ import copy
 import json
 
 SRC = json.load(open("kaggle/gpt_mole_trials.ipynb", encoding="utf-8"))
-GPU, DEPS, COPY = (copy.deepcopy(SRC["cells"][i]) for i in (1, 2, 3))
-COPY_SRC = "".join(COPY["source"])
+# Cells 1 and 2 (GPU check, dependencies) are reused as they are; the setup cell is
+# written out below because Task 8 needs a newer bundle than that notebook assumes.
+GPU, DEPS = (copy.deepcopy(SRC["cells"][i]) for i in (1, 2))
 
 
 def md(text: str) -> dict:
@@ -23,15 +24,70 @@ def code(text: str) -> dict:
 
 
 def copy_cell(out_root: str, restore_name: str, extra_needed: str = "") -> dict:
-    s = COPY_SRC.replace('OUT_ROOT = "results/table1_trials"', f'OUT_ROOT = "{out_root}"')
-    s = s.replace('glob.glob("/kaggle/input/**/table1_trials", recursive=True)',
-                  f'glob.glob("/kaggle/input/**/{restore_name}", recursive=True)')
-    s = s.replace("run_table1.CHEMDESC, *run_table1.FREEFORM.values()]",
-                  "run_table1.CHEMDESC, *run_table1.FREEFORM.values()" + extra_needed + "]")
-    assert out_root in s and restore_name in s and (not extra_needed or extra_needed in s)
-    cell = copy.deepcopy(COPY)
-    cell["source"] = s.splitlines(keepends=True)
-    return cell
+    """Setup cell: pick the right attached bundle, copy it, re-gzip inputs, check them.
+
+    Written out in full rather than patched from gpt_mole_trials.ipynb, because Task 8
+    needs files only the newer bundle has. Several dataset versions can be attached at
+    once and a plain glob may return the stale one, so the bundle is chosen by a marker
+    file instead of taking the first match.
+    """
+    return code('''# 3. Copy the bundle to a writable folder (inputs are read-only) and work from there.
+#    Also restores finished runs from a previous version's output, if one is attached.
+import glob, gzip, importlib, os, shutil, sys
+
+MARKER = "scripts/run_mole_protocol_search.py"   # present only in the Task 8 bundle
+found = [os.path.dirname(os.path.dirname(h))
+         for h in glob.glob("/kaggle/input/**/notebooks/build_train.py", recursive=True)]
+assert found, "Bundle not found - attach the dataset made from gpt_mole_bundle.zip."
+# Several dataset versions can be attached at once, so use one that has the new files
+# rather than whichever the glob happens to return first.
+usable = [b for b in found if os.path.exists(os.path.join(b, MARKER))]
+if not usable:
+    listing = "\\n".join(
+        f"  {b}  (run_table1.py: {os.path.getsize(os.path.join(b, 'scripts/run_table1.py')):,} bytes)"
+        for b in found)
+    raise AssertionError(
+        "The attached dataset is an OLD version - it does not contain " + MARKER + ".\\n"
+        "Attached bundle(s):\\n" + listing + "\\n"
+        "Fix: upload the new gpt_mole_bundle.zip to the dataset via New Version, then in this\\n"
+        "notebook's Input panel remove the dataset and add it again so the newest version is\\n"
+        "used (run_table1.py is then ~12,463 bytes and data/gpt_guided_flat/ exists).")
+BUNDLE = usable[0]
+WORK = "/kaggle/working/gpt_mole"
+# dirs_exist_ok refreshes code and data in place while keeping any results/ already
+# computed, so a newer dataset version takes effect without restarting the kernel.
+shutil.copytree(BUNDLE, WORK, dirs_exist_ok=True)
+os.chdir(WORK)
+print("bundle:", BUNDLE, "-> working in", os.getcwd())
+if os.path.exists("MANIFEST.txt"):
+    print(open("MANIFEST.txt").read())
+
+sys.path.insert(0, "scripts")
+import run_table1
+importlib.reload(run_table1)   # in case an older copy was imported earlier in this kernel
+
+# Kaggle decompresses .gz files inside an uploaded dataset, so x.tsv.gz arrives as
+# x.tsv. Re-compress them to the names the scripts expect.
+needed = [run_table1.SF3, run_table1.SPLIT, run_table1.MOLE, run_table1.PRESTWICK,
+          run_table1.CHEMDESC, *run_table1.FREEFORM.values()EXTRA]
+for path in needed:
+    if path.endswith(".gz") and not os.path.exists(path) and os.path.exists(path[:-3]):
+        with open(path[:-3], "rb") as src, gzip.open(path, "wb") as dst:
+            shutil.copyfileobj(src, dst)
+        print("re-compressed", path)
+missing = [p for p in needed if not os.path.exists(p)]
+assert not missing, f"Missing inputs: {missing}"
+print(f"all {len(needed)} inputs present")
+
+OUT_ROOT = "OUT_ROOT_VALUE"
+previous = [d for d in glob.glob("/kaggle/input/**/RESTORE_NAME", recursive=True)
+            if not d.startswith(BUNDLE)]
+for d in previous:
+    shutil.copytree(d, OUT_ROOT, dirs_exist_ok=True)
+    print("restored finished runs from", d)'''
+                .replace("EXTRA", extra_needed)
+                .replace("OUT_ROOT_VALUE", out_root)
+                .replace("RESTORE_NAME", restore_name))
 
 
 def save(path: str, cells: list[dict]) -> None:
