@@ -1,0 +1,20 @@
+{
+  "seed": 0,
+  "roc_auc": 0.8010098251858924,
+  "pr_auc": 0.6480261752665151,
+  "threshold": 0.40616142749786377,
+  "accuracy": 0.8775,
+  "balanced_accuracy": 0.7557830312527566,
+  "precision": 0.6246458923512748,
+  "recall": 0.5772251308900523,
+  "f1": 0.6,
+  "mcc": 0.528381634363729,
+  "val_best_f1": 0.5266457680250785,
+  "val_best_threshold": 0.40616142749786377,
+  "val_macro_pr_auc_by_strain": 0.606224753271298,
+  "test_macro_pr_auc_by_strain": 0.6505257698640501,
+  "n_train": 38280,
+  "n_val": 4800,
+  "n_test": 4800,
+  "n_features": 80
+}

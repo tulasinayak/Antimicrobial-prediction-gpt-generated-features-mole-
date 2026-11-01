@@ -1,0 +1,38 @@
+{
+  "best_val_macro_pr_auc": 0.5177040029697698,
+  "best_params": {
+    "tree_method": "hist",
+    "max_bin": 512,
+    "lambda": 1.0,
+    "alpha": 0.0,
+    "objective": "binary:logistic",
+    "eval_metric": "aucpr",
+    "verbosity": 0,
+    "eta": 0.05,
+    "max_depth": 8,
+    "subsample": 1.0,
+    "colsample_bytree": 0.8,
+    "min_child_weight": 1,
+    "gamma": 0.0
+  },
+  "test_seeds": [
+    1
+  ],
+  "roc_auc": 0.7991158759644871,
+  "pr_auc": 0.5958439157787824,
+  "threshold": 0.287771075963974,
+  "accuracy": 0.8141666666666667,
+  "balanced_accuracy": 0.7462419377435541,
+  "precision": 0.44265232974910396,
+  "recall": 0.6465968586387435,
+  "f1": 0.5255319148936171,
+  "mcc": 0.4265032704906799,
+  "val_best_f1": 0.49241146711635747,
+  "val_best_threshold": 0.287771075963974,
+  "val_macro_pr_auc_by_strain": 0.5372388149819567,
+  "test_macro_pr_auc_by_strain": 0.6059253902821171,
+  "n_train": 38280,
+  "n_val": 4800,
+  "n_test": 4800,
+  "n_features": 86
+}

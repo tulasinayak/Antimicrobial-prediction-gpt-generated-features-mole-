@@ -144,6 +144,36 @@ rows so differences against MolE are paired. Results: `results/mole_method_all_r
 - Test CIs are about +/-0.12 wide for every row: 120 test compounds cannot separate
   representations that differ by 0.01-0.05.
 
+## 3d. GPT-only and guided rows, 5 trials (Kaggle GPU)
+
+`scripts/run_table1.py --trials 0,1,2,3,4 --include-gpt-only --include-guided --only-extra
+--device cuda`: 18 rows x 5 trials, all on GPU, same protocol and split as 3b.
+Results: `results/table1_trials_extra/`. Guided inputs rebuilt by `scripts/flatten_guided.py`
+(one schema, 46 features per model, shared by both guided rows); the submitted guided runs had
+used inconsistent flattenings and the old 195-compound split, so their numbers are not
+comparable.
+
+Mean per-strain test PR-AUC +/- SD (reference: MolE 0.6818, RDKit 0.6977, MolE+GPT-5.2 0.7102):
+
+| Model | GPT only (free-form) | MolE + guided | Guided only | Guided only, submitted |
+|---|---|---|---|---|
+| GPT-4o-mini | 0.6436 ± 0.0096 | 0.6812 ± 0.0094 | 0.5275 ± 0.0174 | 0.4779 |
+| GPT-4.1-mini | 0.6704 ± 0.0086 | **0.6935 ± 0.0207** | 0.5600 ± 0.0259 | 0.5220 |
+| GPT-4o | 0.6576 ± 0.0254 | 0.6784 ± 0.0219 | 0.5379 ± 0.0367 | 0.4957 |
+| GPT-4.1 | **0.6850 ± 0.0114** | 0.6926 ± 0.0090 | **0.6035 ± 0.0136** | 0.5289 |
+| GPT-5.1 | 0.6328 ± 0.0091 | 0.6928 ± 0.0210 | 0.5883 ± 0.0376 | 0.4239 |
+| GPT-5.2 | 0.6713 ± 0.0080 | 0.6868 ± 0.0147 | 0.6158 ± 0.0140 | 0.5919 |
+
+- **The guided schema costs signal when GPT stands alone**: free-form beats guided by
+  0.044-0.120 for every model, 5 of 6 significant (paired t, n = 5).
+- **GPT-4.1 features alone match MolE alone** (+0.003, 3/5 wins, p = 0.80). The submission's
+  "GPT descriptors alone do not substitute for the pretrained graph representation" was drawn
+  from the guided runs and does not hold free-form.
+- Added to MolE, guided and free-form are indistinguishable (4 of 6 with |diff| < 0.01), except
+  GPT-5.1 where guided wins 5/5 (+0.033, p = 0.003) - its 509 free-form features hurt.
+- **No guided row beats RDKit**: the best (MolE + GPT-4.1-mini, 0.6935) is 0.004 below it
+  (p = 0.69), and all six now sit within 0.678-0.694.
+
 ## 4. External MIC validation: GPT does not improve attribution
 
 `scripts/ap_g_comparison.py`. Supplementary Table 10 already carries the published MolE
