@@ -7,7 +7,8 @@ import shutil
 
 from common import OUT, SECTIONS
 
-ORDER = ["summary", "task1", "task2", "task3", "task4", "task5", "task6", "task7", "task8"]
+ORDER = ["summary", "task1", "task2", "task3", "task4", "task5", "task6", "task7", "task8",
+         "tables"]
 
 
 def main() -> None:
