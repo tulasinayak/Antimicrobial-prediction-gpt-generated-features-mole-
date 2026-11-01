@@ -174,6 +174,61 @@ Mean per-strain test PR-AUC +/- SD (reference: MolE 0.6818, RDKit 0.6977, MolE+G
 - **No guided row beats RDKit**: the best (MolE + GPT-4.1-mini, 0.6935) is 0.004 below it
   (p = 0.69), and all six now sit within 0.678-0.694.
 
+## 3e. MolE's full original protocol, 5 trials (Kaggle GPU)
+
+`scripts/run_mole_protocol_search.py --rows mole_only,mole_plus_gpt-5.2,gpt_only_gpt-5.2
+--trials 0,1,2,3,4 --device cuda`: MolE's own search, not ours. Per trial k, 5 configurations are
+drawn with seed k from MolE's space (n_estimators {30,100,300,500,1000}, max_depth {5,10,50,100},
+eta {0.05,0.1,0.3,1.0}, subsample {0.3,0.5,0.8,1.0}) and shared by all three rows; each is fitted
+5 times; the configuration with the best mean validation PR-AUC is selected. Raw features with
+fillna(0), no scaling, no early stopping, no class weighting, pooled PR-AUC = `auc(recall,
+precision)`. 375 fits, 1.3 GPU-hours. Results: `results/mole_protocol_trials/`.
+
+Pooled test PR-AUC +/- SD over 5 trials, with the same rows under our protocol (3b/3d, pooled
+column) for comparison:
+
+| Row | MolE's protocol | Our protocol | Protocol effect |
+|---|---|---|---|
+| MolE | 0.7146 +/- 0.0211 | 0.6734 +/- 0.0259 | **+0.041** |
+| MolE + GPT-5.2 | **0.7361 +/- 0.0291** | 0.7055 +/- 0.0171 | +0.031 |
+| GPT-5.2 only | 0.6362 +/- 0.0145 | 0.6619 +/- 0.0062 | -0.026 |
+
+Paired by trial against MolE alone (n = 5):
+
+| Comparison | Mean diff | SD | Wins | p (paired t) | p (Wilcoxon) |
+|---|---|---|---|---|---|
+| MolE + GPT-5.2 vs MolE | +0.0216 | 0.0335 | 4/5 | 0.223 | 0.313 |
+| GPT-5.2 only vs MolE | **-0.0784** | 0.0316 | 0/5 | **0.005** | 0.063 |
+
+- **The GPT gain survives the protocol change, but is not significant under it.** MolE + GPT-5.2
+  beats MolE by +0.022 in 4 of 5 trials here, against +0.032 pooled (5/5, p = 0.011 per-strain)
+  under ours. MolE's protocol roughly doubles the trial-to-trial SD of the difference, so the
+  same effect no longer separates from zero at n = 5.
+- **MolE's protocol is worth about +0.04 to MolE and -0.03 to GPT alone.** Deep unregularised
+  trees on raw features suit 1000-d embeddings; the 45 GPT features do better with our scaling,
+  class weighting and early stopping. Protocol choice is not neutral between representations,
+  which is an argument for reporting both rather than adopting either.
+- **The published 0.7797 is a draw from a very wide distribution, not a protocol advantage we
+  failed to match.** Across the 125 MolE-alone fits, test PR-AUC spans 0.229 to 0.810 and
+  validation 0.230 to 0.713; the best (trial, configuration) cell averages 0.7747. MolE's winning
+  configuration (1000 trees, depth 100, eta 0.1, subsample 1.0) was never drawn in 25 draws,
+  consistent with the ~1.6% chance per 5-draw trial.
+- **Validation barely ranks test.** Within a trial, across the 5 configurations, Spearman
+  rho(val, test) averages 0.44 for MolE, 0.78 for MolE + GPT-5.2 and 0.72 for GPT-5.2 only.
+  Selecting on test instead of validation would gain MolE up to +0.066 in a single trial. The
+  inverted validation/test ordering the reviewers objected to is a property of a 120-compound
+  test set under this search, not of GPT features.
+- **A third of MolE's space is unusable.** 50 of 375 fits score below 0.40, all of them at
+  eta = 1.0 or at eta = 0.3 with 500 deep trees; mean test by eta is 0.697 (0.05), 0.697 (0.1),
+  0.646 (0.3), 0.447 (1.0). MolE's 5-draw search therefore spends a large share of its budget on
+  configurations that cannot work, which is why its selected test values swing so widely.
+- Three of the 5 MolE trials selected a subsample = 1.0 configuration, where the fit is
+  deterministic and fit-to-fit SD is exactly 0; the variance in the table above is from the
+  search, not from seeding. For the selected configurations `auc(recall, precision)` and
+  `average_precision_score` agree to 4e-4, so the metric choice does not affect these numbers.
+- GPU `hist` is used throughout; MolE used CPU `exact`, which was worth +0.015 on MolE's own
+  configuration (0.7802 vs 0.7655, section 3). The protocol effects above are larger than that.
+
 ## 4. External MIC validation: GPT does not improve attribution
 
 `scripts/ap_g_comparison.py`. Supplementary Table 10 already carries the published MolE

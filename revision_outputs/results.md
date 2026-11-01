@@ -16,7 +16,7 @@ All numbers below come from the scripts in `scripts/` (run from the repository r
 10. **Guided GPT-only table: the Test F1 column was a copy of another F1 value**; correct test F1 values are in Task 7. These guided runs also used the old 195-compound split, so the guided tables are not comparable with the main table. (Task 7)
 11. **Small corrections:** FractionCSP3 rho is 0.9275 (caption 0.928 vs panel 0.927 is rounding); GPT-5.1's 509 "features" include a non-descriptor flag (`smiles_parsed_successfully`); 7 GPT-5.2 compounds are failed generations (every feature 0); one compound (Prestw-1180) sits on a float-precision split boundary, so re-scoring the GPU models on CPU shifts its probabilities by up to 0.05 (per-strain AP unchanged to 1e-4).
 12. **The guided schema costs signal, and GPT-4.1 features alone match MolE alone** (Task 8b, 18 rows x 5 trials on GPU). Free-form GPT-only reaches 0.633-0.685 against the submitted guided-only 0.424-0.592; dropping the RDKit-shaped schema gains 0.04-0.12 per model (5 of 6 significant at n = 5). GPT-4.1 alone scores 0.6850 vs MolE's 0.6818 (p = 0.80), so the submission's "GPT descriptors alone do not substitute for the pretrained graph representation" holds only for the guided variant. Combined with MolE, guided and free-form are indistinguishable except GPT-5.1, where guided wins 5/5 (+0.033, p = 0.003). No guided row beats RDKit.
-13. **Task 8a is ready but not yet run** (needs the Kaggle GPU). Closest existing evidence: with MolE's own configuration, MolE+GPT-5.2 is 0.019 below MolE alone (95% CI -0.059 to +0.022).
+13. **Under MolE's own full protocol the GPT gain holds but loses significance, and 0.7797 is a lucky draw** (Task 8a, 375 fits on GPU). MolE 0.7146 +/- 0.0211 pooled, MolE+GPT-5.2 0.7361 +/- 0.0291 (+0.022, 4/5, p = 0.22), GPT-5.2 only 0.6362 +/- 0.0145 (-0.078, 0/5, p = 0.005). Their protocol is worth +0.041 to MolE and -0.026 to GPT alone, so it is not neutral between representations, and it doubles the SD of the paired difference. Across the 125 MolE-alone fits test PR-AUC spans 0.229-0.810; MolE's winning configuration was never drawn in 25 draws. Within-trial Spearman(val, test) averages 0.44 for MolE, so validation barely ranks test under their protocol either. (Task 8a)
 
 ## Task 1. Per-trial values and paired tests
 
@@ -543,13 +543,82 @@ Paired by trial (n = 5, per-strain test PR-AUC):
    lower for GPT-only, consistent with the old 195-compound test split and the inconsistent
    flattening rather than with any property of the features.
 
-### 8a. MolE's full original protocol — not yet run
+### 8a. MolE's full original protocol, 5 trials - DONE
 
-`scripts/run_mole_protocol_search.py` and `kaggle/task8a_mole_protocol.ipynb` are ready: per
-trial, 5 configurations drawn from MolE's space (n_estimators 30-1000, max_depth 5-100, eta
-0.05-1, subsample 0.3-1), shared across rows, 5 fits each, selection on mean validation PR-AUC,
-raw features, no early stopping, pooled PR-AUC. Rows: MolE, MolE + GPT-5.2, GPT-5.2 only.
+`scripts/run_mole_protocol_search.py --rows mole_only,mole_plus_gpt-5.2,gpt_only_gpt-5.2
+--trials 0,1,2,3,4 --device cuda` on a Kaggle GPU: 375 fits, 1.3 GPU-hours. Results:
+`results/mole_protocol_trials/` (`fits.csv` has every fit, `selected_per_trial.csv` the
+selection, `table_mole_protocol.csv` the summary).
 
-Closest existing evidence (`results/mole_method_all_rows/`, FINDINGS 3c): with MolE's single
-published configuration, MolE + GPT-5.2 scores 0.7331 against MolE's 0.7527, a difference of
--0.019 with a bootstrap 95% CI of [-0.059, +0.022].
+This is MolE's search, not ours. Per trial k, 5 configurations are drawn with seed k from MolE's
+space (n_estimators {30,100,300,500,1000}, max_depth {5,10,50,100}, eta {0.05,0.1,0.3,1.0},
+subsample {0.3,0.5,0.8,1.0}) and shared by all three rows so comparisons stay paired; each
+configuration is fitted 5 times; the one with the best mean validation PR-AUC is selected. Raw
+features with fillna(0), no scaling, no early stopping, no class weighting, pooled
+PR-AUC = `auc(recall, precision)`, exactly as in MolE's notebooks.
+
+**Pooled test PR-AUC +/- SD over 5 trials.** The same rows under our protocol (Task 1 / 8b,
+pooled column, so the metric matches) are shown beside them:
+
+| Row | MolE's protocol | Our protocol | Protocol effect |
+|---|---|---|---|
+| MolE | 0.7146 +/- 0.0211 | 0.6734 +/- 0.0259 | **+0.041** |
+| MolE + GPT-5.2 | **0.7361 +/- 0.0291** | 0.7055 +/- 0.0171 | +0.031 |
+| GPT-5.2 only | 0.6362 +/- 0.0145 | 0.6619 +/- 0.0062 | -0.026 |
+
+Per trial (selected configuration's mean test PR-AUC over its 5 fits):
+
+| Trial | MolE | MolE + GPT-5.2 | GPT-5.2 only |
+|---|---|---|---|
+| 0 | 0.6968 | 0.7020 | 0.6253 |
+| 1 | 0.7395 | 0.7201 | 0.6215 |
+| 2 | 0.6948 | 0.7652 | 0.6512 |
+| 3 | 0.7073 | 0.7254 | 0.6520 |
+| 4 | 0.7344 | 0.7679 | 0.6309 |
+
+Paired against MolE alone (n = 5):
+
+| Comparison | Mean diff | SD | Wins | p (paired t) | p (Wilcoxon) |
+|---|---|---|---|---|---|
+| MolE + GPT-5.2 vs MolE | +0.0216 | 0.0335 | 4/5 | 0.223 | 0.313 |
+| GPT-5.2 only vs MolE | **-0.0784** | 0.0316 | 0/5 | **0.005** | 0.063 |
+
+**What this changes.**
+
+1. **The GPT gain survives the protocol change, but stops being significant under it.**
+   MolE + GPT-5.2 beats MolE by +0.022 in 4 of 5 trials here, against +0.032 pooled (5/5,
+   p = 0.011 on per-strain AP) under our protocol. MolE's protocol roughly doubles the
+   trial-to-trial SD of the paired difference (0.034 vs 0.016), so the same-sized effect no
+   longer separates from zero at n = 5. The honest claim is a small, consistently positive
+   effect that one protocol resolves and the other does not.
+2. **Protocol choice is not neutral between representations.** MolE's recipe is worth about
+   +0.04 to MolE and -0.03 to GPT-5.2 alone. Deep unregularised trees on raw features suit the
+   1000-d embeddings; the 45 GPT features need the scaling, class weighting and early stopping
+   our pipeline provides. This is a reason to report both protocols rather than adopt either as
+   "the" protocol.
+3. **MolE's published 0.7797 is a draw from a very wide distribution, not a protocol advantage
+   we failed to match.** Across the 125 MolE-alone fits, test PR-AUC spans 0.229 to 0.810
+   (validation 0.230 to 0.713); the best (trial, configuration) cell averages 0.7747. MolE's
+   winning configuration (1000 trees, depth 100, eta 0.1, subsample 1.0) was not drawn once in
+   25 draws, matching the ~1.6% per-trial chance estimated in Task 0. Our 5 trials of their own
+   protocol average 0.7146.
+4. **Validation barely ranks test, under their protocol too.** Within a trial, across the 5
+   configurations, Spearman rho(val, test) averages 0.44 for MolE, 0.78 for MolE + GPT-5.2 and
+   0.72 for GPT-5.2 only; selecting on test rather than validation would gain MolE up to +0.066
+   in a single trial. The inverted validation/test ordering the reviewers objected to is a
+   property of a 120-compound test set under a 5-draw search, not of GPT features.
+5. **A seventh of MolE's space cannot work.** 50 of 375 fits score below 0.40, all at eta = 1.0
+   or eta = 0.3 with 500 deep trees. Mean test by eta: 0.697 (0.05), 0.697 (0.10), 0.646 (0.30),
+   0.447 (1.00). A 5-draw search spends much of its budget there, which is why its selected test
+   values swing by +/-0.1.
+
+**Caveats.** GPU `hist` throughout; MolE used CPU `exact`, worth +0.015 on their own
+configuration (0.7802 vs 0.7655). Three of the 5 MolE trials selected a subsample = 1.0
+configuration, which is deterministic (fit-to-fit SD exactly 0), so the SD in the table is
+search variance, not seed variance. For the selected configurations `auc(recall, precision)` and
+`average_precision_score` agree to 4e-4.
+
+Single-configuration comparison for reference (`results/mole_method_all_rows/`, FINDINGS 3c):
+with MolE's one published configuration applied to every row, MolE + GPT-5.2 scores 0.7331
+against MolE's 0.7527, -0.019 with a bootstrap 95% CI of [-0.059, +0.022] - the same small
+difference, with the sign flipped by which single configuration is used.
