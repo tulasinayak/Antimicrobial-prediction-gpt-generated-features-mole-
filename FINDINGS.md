@@ -229,6 +229,57 @@ Paired by trial against MolE alone (n = 5):
 - GPU `hist` is used throughout; MolE used CPU `exact`, which was worth +0.015 on MolE's own
   configuration (0.7802 vs 0.7655, section 3). The protocol effects above are larger than that.
 
+## 3f. Does Task 8a preprocess GPT features like Table 1?
+
+Checked by comparing the matrices the two code paths hand to XGBoost
+(`revision_outputs/data/gpt_feature_set_table1_vs_task8a.csv`).
+
+**The per-column transform is identical.** Both zero-fill missing values and apply no scaling
+and no missingness indicators: Table 1 through `SimpleImputer(strategy="constant",
+fill_value=0.0)` in the `gpt` branch of the `ColumnTransformer`
+(`notebooks/build_train.py:557`), Task 8a through `features.fillna(0)`
+(`scripts/reproduce_mole_original.py:80`). On the 211 columns both paths keep, the values are
+bit-identical (max |difference| 0); GPT-5.2 has no missing values at all, so neither imputer
+fires.
+
+**The feature set differs by nine columns out of 220.**
+
+| | Table 1 | Task 8a |
+|---|---|---|
+| GPT-5.2 columns used | 213 | 218 |
+| of which real descriptors | 211 | 218 |
+| selection rule | numeric, drop `identifiers.*` / `input.*` / `bug_prior_train`, then drop any column non-zero in < 1% of training compounds (`MIN_NONZERO_FRAC`, `build_train.py:531`) | all numeric columns (`select_dtypes(include="number")`) |
+
+- **Seven near-constant descriptors are in 8a but not Table 1**, removed there by the 1% filter:
+  `element_count_b`, `element_count_si` and `radical_electron_count` are zero for all 1,193
+  compounds, so XGBoost cannot split on them at all; `element_count_se` (1 compound),
+  `element_count_metal` (2), `ring_count_spiro` (3) and
+  `pan_assay_interference_pains_alert_est` (8) are non-zero for a handful.
+- **Two metadata columns are in Table 1 but not 8a.** `smiles_resolution` is the constant
+  string `fast`, which `_smart_to_numeric` turns into all-NaN and the imputer then fills with
+  0; it is never split on. `input` is the raw generation payload
+  (`{'query_smiles': ..., 'parsed': True}`), from which `_smart_to_numeric` extracts the first
+  number in the string, giving a nuisance feature with two distinct values; the trial-0
+  MolE + GPT-5.2 model splits on it 7 times for 0.01% of total gain. Both are harmless, but
+  neither belongs in a feature block.
+
+**The MolE and RDKit blocks do differ, by design, and by less than it appears.** Table 1
+median-imputes, adds missingness indicators and standardises them; 8a zero-fills and does
+nothing else. But MolE's 1,000 dimensions contain no missing values in the training split, so
+the imputer and the indicators are no-ops there, and the 65 dimensions Table 1 drops are
+exactly the 65 that are constant across all 957 training compounds. For RDKit the imputer
+fills 12 cells in 4 columns and adds 4 indicator columns, and 2 of the 98 descriptors are
+constant. `StandardScaler` is a monotone per-feature transform, so it cannot change a
+gradient-boosted tree's split structure or its predictions beyond floating-point precision.
+The +0.041 protocol effect in section 3e therefore comes from the search space, the absence of
+early stopping and the absence of class weighting, not from preprocessing.
+
+**Consequence.** The 8a rows are not a clean ablation of Table 1's GPT block: they carry 7
+extra near-constant descriptors and drop 2 metadata columns. Three of the seven are
+identically zero and so provably inert; the other four are non-zero for at most 8 of 1,193
+compounds. We did not re-run 8a with Table 1's filter, so the difference is bounded by
+argument rather than measured.
+
 ## 4. External MIC validation: GPT does not improve attribution
 
 `scripts/ap_g_comparison.py`. Supplementary Table 10 already carries the published MolE

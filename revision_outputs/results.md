@@ -612,6 +612,20 @@ Paired against MolE alone (n = 5):
    0.447 (1.00). A 5-draw search spends much of its budget there, which is why its selected test
    values swing by +/-0.1.
 
+**Preprocessing, against Table 1.** The per-column transform of the GPT block is identical in
+the two protocols: both zero-fill and neither scales nor adds missingness indicators, and on the
+columns both keep the matrices are bit-identical (GPT-5.2 has no missing values, so neither
+imputer fires). The feature *set* differs by nine columns of 220: Table 1 drops seven
+near-constant descriptors through its 1%-non-zero filter (three of them zero for every compound,
+the other four non-zero for 1--8 of 1,193) and carries two metadata columns, `smiles_resolution`
+(constant, imputed to zero, never split on) and `input` (a two-valued artefact of coercing the
+generation payload to a number; 0.01% of total gain). The MolE and RDKit blocks are
+median-imputed, indicator-augmented and standardised in Table 1 and only zero-filled here, but
+MolE has no missing training values, the 65 dimensions Table 1 drops are exactly its
+training-constant ones, and standardising is monotone per feature, so it cannot move a tree
+model. The protocol effect is therefore not a preprocessing artefact. Details and the
+column-by-column difference: FINDINGS 3f and `data/gpt_feature_set_table1_vs_task8a.csv`.
+
 **Caveats.** GPU `hist` throughout; MolE used CPU `exact`, worth +0.015 on their own
 configuration (0.7802 vs 0.7655). Three of the 5 MolE trials selected a subsample = 1.0
 configuration, which is deterministic (fit-to-fit SD exactly 0), so the SD in the table is

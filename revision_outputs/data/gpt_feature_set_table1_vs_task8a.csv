@@ -1,0 +1,10 @@
+feature,in_table1,in_task8a,nonzero_train,nonzero_valid,nonzero_test
+element_count_b,False,True,0.0,0.0,0.0
+element_count_metal,False,True,2.0,0.0,0.0
+element_count_se,False,True,1.0,0.0,0.0
+element_count_si,False,True,0.0,0.0,0.0
+input,True,False,,,
+pan_assay_interference_pains_alert_est,False,True,7.0,0.0,1.0
+radical_electron_count,False,True,0.0,0.0,0.0
+ring_count_spiro,False,True,2.0,0.0,1.0
+smiles_resolution,True,False,,,
