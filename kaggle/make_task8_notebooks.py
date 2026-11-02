@@ -146,23 +146,41 @@ def task8a() -> None:
     save("kaggle/task8a_mole_protocol.ipynb", [
         md("""# Task 8a: MolE's full original protocol, 5 trials (GPU)
 
-Rows: MolE, MolE + GPT-5.2, GPT-5.2 only. Per trial k, 5 configurations are drawn (seed k, shared by all rows) from MolE's search space (n_estimators 30-1000, max_depth 5-100, eta 0.05-1, subsample 0.3-1), each fitted 5 times; the configuration with the best mean validation PR-AUC is selected. Raw features, no early stopping, no class weighting, pooled PR-AUC = auc(recall, precision), as in MolE's code. The GPU uses `hist`; MolE used `exact` (MolE alone: 0.7802 exact vs 0.7655 hist on CPU).
+Rows: MolE, MolE + GPT-5.2, GPT-5.2 only, RDKit descriptors only. Per trial k, 5 configurations are drawn (seed k, shared by every row) from MolE's search space (n_estimators 30-1000, max_depth 5-100, eta 0.05-1, subsample 0.3-1), each fitted 5 times; the configuration with the best mean validation PR-AUC is selected. Raw features, no early stopping, no class weighting, pooled PR-AUC = auc(recall, precision), as in MolE's code. The GPU uses `hist`; MolE used `exact` (MolE alone: 0.7802 exact vs 0.7655 hist on CPU).
 
-Every fit is appended to `fits.csv`, so the run resumes after an interruption: attach this notebook's previous output and run again.
+Every fit is appended to `fits.csv` and finished fits are skipped, so adding a row costs only that row's time.
 
-**Setup:** attach the new `gpt_mole_bundle.zip` dataset version, Accelerator = GPU, Internet on, then **Save Version -> Save & Run All**."""),
+**To add `rdkit_only` to a finished run: attach this notebook's previous output** (Input panel -> Add Input -> Notebook Output). Cell 4 then shows 125 fits for each of the three rows already done, and only `rdkit_only` runs (about 4 minutes). Without that attachment every row is recomputed from scratch, which is correct but costs ~80 minutes.
+
+The paired statistics compare each row with `mole_only` from the same `fits.csv`, so all rows must come from the same GPU run: CPU and GPU `hist` disagree by up to 0.02 on this data, which is larger than the differences being measured.
+
+**Setup:** attach the `gpt_mole_bundle.zip` dataset (no new version needed for this run), Accelerator = GPU, Internet on, then **Save Version -> Save & Run All**."""),
         GPU, DEPS,
         copy_cell("results/mole_protocol_trials", "mole_protocol_trials"),
-        code('''# 4. Run all fits (resumes from fits.csv). Add rdkit_only,mole_plus_rdkit to ROWS if time allows.
-ROWS = "mole_only,mole_plus_gpt-5.2,gpt_only_gpt-5.2"
-!python -u scripts/run_mole_protocol_search.py --rows {ROWS} --trials 0,1,2,3,4 --device cuda --output_dir {OUT_ROOT}
-assert _exit_code == 0, "run failed - see the output above"'''),
-        code('''# 5. Table: mean +/- sd over trials and paired difference vs MolE; then the selected configuration per trial.
+        code('''# 4. What came back from a previous run, if its output was attached. Rows already
+#    complete are skipped below, so only the missing ones cost GPU time.
 import pandas as pd
+fits_csv = f"{OUT_ROOT}/fits.csv"
+if os.path.exists(fits_csv):
+    print(pd.read_csv(fits_csv).groupby("row").size().rename("fits").to_string(), "\\n(125 = complete)")
+else:
+    print("no previous fits.csv - this will run every row from scratch (~80 min on GPU)")'''),
+        code('''# 5. Run all fits (appends to fits.csv, so finished rows are skipped).
+ROWS = "mole_only,mole_plus_gpt-5.2,gpt_only_gpt-5.2,rdkit_only"
+!python -u scripts/run_mole_protocol_search.py --rows {ROWS} --trials 0,1,2,3,4 --device cuda --output_dir {OUT_ROOT}
+assert _exit_code == 0, "run failed - see the output above"
+
+# The paired statistics need mole_only in the same fits.csv, on the same GPU.
+fits = pd.read_csv(fits_csv)
+for row in ROWS.split(","):
+    assert (fits.row == row).sum() == 125, f"{row}: {(fits.row == row).sum()} fits, expected 125"
+print("all rows complete")'''),
+        code('''# 6. Table: mean +/- sd over trials and paired difference vs MolE; then the selected configuration per trial.
+!python scripts/run_mole_protocol_search.py --aggregate_only --output_dir {OUT_ROOT}
 pd.set_option("display.width", 220)
 display(pd.read_csv(f"{OUT_ROOT}/table_mole_protocol.csv").round(4))
 pd.read_csv(f"{OUT_ROOT}/selected_per_trial.csv").round(4)'''),
-        code('''# 6. Package for download (Output tab -> task8a_results.zip).
+        code('''# 7. Package for download (Output tab -> task8a_results.zip).
 archive = shutil.make_archive("/kaggle/working/task8a_results", "zip", OUT_ROOT)
 print(archive, f"{os.path.getsize(archive) / 1024 ** 2:.1f} MB")'''),
     ])
