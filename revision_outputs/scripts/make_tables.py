@@ -180,30 +180,39 @@ def table_protocol() -> str:
     extra = pd.read_csv(f"{EXTRA}/table1.csv").set_index("row")
     pooled = {"mole_only": ours.loc["MolE embeddings only"],
               "mole_plus_gpt-5.2": ours.loc["MolE + GPT-5.2"],
+              "rdkit_only": ours.loc["Chemical descriptors only"],
               "gpt_only_gpt-5.2": extra.loc["GPT-5.2 only"]}
     labels = {"mole_only": "MolE", "mole_plus_gpt-5.2": "MolE + GPT-5.2",
-              "gpt_only_gpt-5.2": "GPT-5.2 only"}
+              "rdkit_only": "RDKit descriptors", "gpt_only_gpt-5.2": "GPT-5.2 only"}
+    # Paired differences within MolE's protocol, from the per-trial selections.
+    sel = pd.read_csv(f"{PROTOCOL}/selected_per_trial.csv").pivot(
+        index="trial", columns="row", values="test")
+
+    def vs(key: str, ref: str) -> str:
+        if key == ref:
+            return "--"
+        d = sel[key] - sel[ref]
+        p = stats.ttest_rel(sel[key], sel[ref]).pvalue
+        cell = f"{signed(d.mean(), 3)} ({int((d > 0).sum())}/5, {sig(p)})"
+        return cell
+
     lines = []
-    for key in ["mole_only", "mole_plus_gpt-5.2", "gpt_only_gpt-5.2"]:
+    for key in ["mole_only", "mole_plus_gpt-5.2", "rdkit_only", "gpt_only_gpt-5.2"]:
         t, o = tab.loc[key], pooled[key]
         theirs = f"{t.test_mean:.4f}\\PM{t.test_sd:.4f}"
         if key == "mole_plus_gpt-5.2":
             theirs = f"\\textbf{{{t.test_mean:.4f}}}\\PM{t.test_sd:.4f}"
         mine = f"{o.test_pooled_pr_auc_mean:.4f}\\PM{o.test_pooled_pr_auc_sd:.4f}"
         delta = signed(t.test_mean - o.test_pooled_pr_auc_mean, 3)
-        if key == "mole_only":
-            diff = "--"
-        else:
-            diff = (f"{signed(t.diff_vs_mole)} ({t.wins_vs_mole}, "
-                    f"$p={t.p_paired_t:.3f}$)")
-        lines.append(f"{labels[key]} & {theirs} & {mine} & {delta} & {diff} \\\\")
+        lines.append(f"{labels[key]} & {theirs} & {mine} & {delta} & "
+                     f"{vs(key, 'mole_only')} & {vs(key, 'rdkit_only')} \\\\")
     return r"""\begin{table}[t]
 \centering
 \small
 \setlength{\tabcolsep}{3pt}
-\begin{tabular}{lcccl}
+\begin{tabular}{lcccll}
 \toprule
-Representation & MolE's protocol & Our protocol & $\delta$ & vs.\ MolE \\
+Representation & MolE's protocol & Our protocol & $\delta$ & vs.\ MolE & vs.\ RDKit \\
 \midrule
 """ + "\n".join(lines) + r"""
 \bottomrule
@@ -213,10 +222,13 @@ run for five trials and both scored with the pooled PR-AUC so the columns are co
 MolE's protocol draws five configurations per trial from its own space (up to 1000 trees and
 depth 100, learning rate up to 1.0), fits each five times, selects on validation PR-AUC, and
 uses raw features with no scaling, no class weighting and no early stopping. $\delta$ is the
-protocol effect. The GPT-5.2 gain survives the change of protocol but stops separating from
-zero, because MolE's protocol doubles the trial-to-trial spread of the paired difference
-(std 0.034 vs.\ 0.016). Across the 125 MolE-only fits the test PR-AUC spans 0.229--0.810,
-and the configuration that produced the published 0.7797 was not drawn once in 25 draws.}
+protocol effect; the last two columns are paired differences within MolE's protocol
+($\Delta$, trials won, paired $t$-test). Under their protocol MolE + GPT-5.2 is ahead of the
+RDKit baseline in every trial, while RDKit and MolE are indistinguishable --- the reverse of
+their ordering under ours, so that ordering is protocol-dependent. The protocol is not neutral
+between representations, favouring the 1000-d embeddings over the 98 descriptors and over GPT's
+features. Across the 125 MolE-only fits the test PR-AUC spans 0.229--0.810, and the
+configuration that produced the published 0.7797 was not drawn once in 25 draws.}
 \label{tab:protocol}
 \end{table}"""
 

@@ -176,13 +176,13 @@ Mean per-strain test PR-AUC +/- SD (reference: MolE 0.6818, RDKit 0.6977, MolE+G
 
 ## 3e. MolE's full original protocol, 5 trials (Kaggle GPU)
 
-`scripts/run_mole_protocol_search.py --rows mole_only,mole_plus_gpt-5.2,gpt_only_gpt-5.2
+`scripts/run_mole_protocol_search.py --rows mole_only,mole_plus_gpt-5.2,gpt_only_gpt-5.2,rdkit_only
 --trials 0,1,2,3,4 --device cuda`: MolE's own search, not ours. Per trial k, 5 configurations are
 drawn with seed k from MolE's space (n_estimators {30,100,300,500,1000}, max_depth {5,10,50,100},
 eta {0.05,0.1,0.3,1.0}, subsample {0.3,0.5,0.8,1.0}) and shared by all three rows; each is fitted
 5 times; the configuration with the best mean validation PR-AUC is selected. Raw features with
 fillna(0), no scaling, no early stopping, no class weighting, pooled PR-AUC = `auc(recall,
-precision)`. 375 fits, 1.3 GPU-hours. Results: `results/mole_protocol_trials/`.
+precision)`. 500 fits, 1.4 GPU-hours. Results: `results/mole_protocol_trials/`.
 
 Pooled test PR-AUC +/- SD over 5 trials, with the same rows under our protocol (3b/3d, pooled
 column) for comparison:
@@ -191,16 +191,30 @@ column) for comparison:
 |---|---|---|---|
 | MolE | 0.7146 +/- 0.0211 | 0.6734 +/- 0.0259 | **+0.041** |
 | MolE + GPT-5.2 | **0.7361 +/- 0.0291** | 0.7055 +/- 0.0171 | +0.031 |
+| RDKit descriptors | 0.7079 +/- 0.0207 | 0.6905 +/- 0.0069 | +0.017 |
 | GPT-5.2 only | 0.6362 +/- 0.0145 | 0.6619 +/- 0.0062 | -0.026 |
 
-Paired by trial against MolE alone (n = 5):
+Paired by trial (n = 5):
 
 | Comparison | Mean diff | SD | Wins | p (paired t) | p (Wilcoxon) |
 |---|---|---|---|---|---|
+| MolE + GPT-5.2 vs RDKit | **+0.0282** | 0.0123 | **5/5** | **0.007** | 0.063 |
 | MolE + GPT-5.2 vs MolE | +0.0216 | 0.0335 | 4/5 | 0.223 | 0.313 |
+| RDKit vs MolE | -0.0066 | 0.0220 | 2/5 | 0.536 | 0.625 |
+| GPT-5.2 only vs RDKit | **-0.0718** | 0.0217 | 0/5 | **0.002** | 0.063 |
 | GPT-5.2 only vs MolE | **-0.0784** | 0.0316 | 0/5 | **0.005** | 0.063 |
 
-- **The GPT gain survives the protocol change, but is not significant under it.** MolE + GPT-5.2
+- **Under MolE's own protocol, MolE + GPT-5.2 beats the RDKit baseline in all five trials**
+  (+0.028, p = 0.007). Under our protocol the same comparison is +0.013, 3/5, p = 0.119. This is
+  the one comparison that MolE's protocol resolves and ours does not, and it is the protocol the
+  reviewers asked us to match. It is one of several paired tests at n = 5, and the Wilcoxon p
+  floors at 0.063, so it is suggestive rather than conclusive.
+- **RDKit descriptors do not beat MolE under MolE's protocol** (-0.007, 2/5, p = 0.54), where
+  under ours they led by +0.017 (4/5, p = 0.17, pooled). Neither direction is significant, so the
+  honest statement is that the two are indistinguishable and their ordering depends on the
+  protocol. MolE's protocol is worth +0.017 to RDKit against +0.041 to MolE, which is what one
+  would expect of a search space built for 1000-d embeddings.
+- **The GPT gain survives the protocol change, but is not significant against MolE.** MolE + GPT-5.2
   beats MolE by +0.022 in 4 of 5 trials here, against +0.032 pooled (5/5, p = 0.011 per-strain)
   under ours. MolE's protocol roughly doubles the trial-to-trial SD of the difference, so the
   same effect no longer separates from zero at n = 5.
@@ -214,13 +228,14 @@ Paired by trial against MolE alone (n = 5):
   configuration (1000 trees, depth 100, eta 0.1, subsample 1.0) was never drawn in 25 draws,
   consistent with the ~1.6% chance per 5-draw trial.
 - **Validation barely ranks test.** Within a trial, across the 5 configurations, Spearman
-  rho(val, test) averages 0.44 for MolE, 0.78 for MolE + GPT-5.2 and 0.72 for GPT-5.2 only.
+  rho(val, test) averages 0.44 for MolE, 0.78 for MolE + GPT-5.2, 0.72 for GPT-5.2 only and
+  0.70 for RDKit.
   Selecting on test instead of validation would gain MolE up to +0.066 in a single trial. The
   inverted validation/test ordering the reviewers objected to is a property of a 120-compound
   test set under this search, not of GPT features.
-- **A third of MolE's space is unusable.** 50 of 375 fits score below 0.40, all of them at
-  eta = 1.0 or at eta = 0.3 with 500 deep trees; mean test by eta is 0.697 (0.05), 0.697 (0.1),
-  0.646 (0.3), 0.447 (1.0). MolE's 5-draw search therefore spends a large share of its budget on
+- **An eighth of MolE's space is unusable.** 64 of 500 fits score below 0.40, all of them at
+  eta = 1.0 or at eta = 0.3 with 500 deep trees; mean test by eta is 0.693 (0.05), 0.693 (0.1),
+  0.647 (0.3), 0.452 (1.0). MolE's 5-draw search therefore spends a large share of its budget on
   configurations that cannot work, which is why its selected test values swing so widely.
 - Three of the 5 MolE trials selected a subsample = 1.0 configuration, where the fit is
   deterministic and fit-to-fit SD is exactly 0; the variance in the table above is from the

@@ -68,14 +68,14 @@ Paired by trial (n = 5, per-strain test PR-AUC):
 
 ### 8a. MolE's full original protocol, 5 trials - DONE
 
-`scripts/run_mole_protocol_search.py --rows mole_only,mole_plus_gpt-5.2,gpt_only_gpt-5.2
---trials 0,1,2,3,4 --device cuda` on a Kaggle GPU: 375 fits, 1.3 GPU-hours. Results:
+`scripts/run_mole_protocol_search.py --rows mole_only,mole_plus_gpt-5.2,gpt_only_gpt-5.2,rdkit_only
+--trials 0,1,2,3,4 --device cuda` on a Kaggle GPU: 500 fits, 1.4 GPU-hours. Results:
 `results/mole_protocol_trials/` (`fits.csv` has every fit, `selected_per_trial.csv` the
 selection, `table_mole_protocol.csv` the summary).
 
 This is MolE's search, not ours. Per trial k, 5 configurations are drawn with seed k from MolE's
 space (n_estimators {30,100,300,500,1000}, max_depth {5,10,50,100}, eta {0.05,0.1,0.3,1.0},
-subsample {0.3,0.5,0.8,1.0}) and shared by all three rows so comparisons stay paired; each
+subsample {0.3,0.5,0.8,1.0}) and shared by all four rows so comparisons stay paired; each
 configuration is fitted 5 times; the one with the best mean validation PR-AUC is selected. Raw
 features with fillna(0), no scaling, no early stopping, no class weighting, pooled
 PR-AUC = `auc(recall, precision)`, exactly as in MolE's notebooks.
@@ -87,52 +87,68 @@ pooled column, so the metric matches) are shown beside them:
 |---|---|---|---|
 | MolE | 0.7146 +/- 0.0211 | 0.6734 +/- 0.0259 | **+0.041** |
 | MolE + GPT-5.2 | **0.7361 +/- 0.0291** | 0.7055 +/- 0.0171 | +0.031 |
+| RDKit descriptors | 0.7079 +/- 0.0207 | 0.6905 +/- 0.0069 | +0.017 |
 | GPT-5.2 only | 0.6362 +/- 0.0145 | 0.6619 +/- 0.0062 | -0.026 |
 
 Per trial (selected configuration's mean test PR-AUC over its 5 fits):
 
-| Trial | MolE | MolE + GPT-5.2 | GPT-5.2 only |
-|---|---|---|---|
-| 0 | 0.6968 | 0.7020 | 0.6253 |
-| 1 | 0.7395 | 0.7201 | 0.6215 |
-| 2 | 0.6948 | 0.7652 | 0.6512 |
-| 3 | 0.7073 | 0.7254 | 0.6520 |
-| 4 | 0.7344 | 0.7679 | 0.6309 |
+| Trial | MolE | MolE + GPT-5.2 | RDKit | GPT-5.2 only |
+|---|---|---|---|---|
+| 0 | 0.6968 | 0.7020 | 0.6788 | 0.6253 |
+| 1 | 0.7395 | 0.7201 | 0.7036 | 0.6215 |
+| 2 | 0.6948 | 0.7652 | 0.7178 | 0.6512 |
+| 3 | 0.7073 | 0.7254 | 0.7045 | 0.6520 |
+| 4 | 0.7344 | 0.7679 | 0.7349 | 0.6309 |
 
-Paired against MolE alone (n = 5):
+Paired by trial (n = 5):
 
 | Comparison | Mean diff | SD | Wins | p (paired t) | p (Wilcoxon) |
 |---|---|---|---|---|---|
+| MolE + GPT-5.2 vs RDKit | **+0.0282** | 0.0123 | **5/5** | **0.007** | 0.063 |
 | MolE + GPT-5.2 vs MolE | +0.0216 | 0.0335 | 4/5 | 0.223 | 0.313 |
+| RDKit vs MolE | -0.0066 | 0.0220 | 2/5 | 0.536 | 0.625 |
+| GPT-5.2 only vs RDKit | **-0.0718** | 0.0217 | 0/5 | **0.002** | 0.063 |
 | GPT-5.2 only vs MolE | **-0.0784** | 0.0316 | 0/5 | **0.005** | 0.063 |
 
 **What this changes.**
 
-1. **The GPT gain survives the protocol change, but stops being significant under it.**
+1. **Under MolE's own protocol, MolE + GPT-5.2 beats the RDKit baseline in all five trials**
+   (+0.028, p = 0.007), where under our protocol that comparison is +0.013, 3/5, p = 0.119. It is
+   the one comparison MolE's protocol resolves and ours does not, and it is the protocol the
+   reviewers asked us to match, so it belongs in the paper. Two qualifications: it is one of
+   several paired tests at n = 5, and the Wilcoxon p floors at 0.063, so it is suggestive rather
+   than settled.
+2. **RDKit descriptors do not beat MolE under MolE's protocol** (-0.007, 2/5, p = 0.54), where
+   under ours they led by +0.017 (4/5, p = 0.17, pooled). Neither direction is significant, so
+   the two are indistinguishable and their ordering is protocol-dependent. The submitted paper's
+   implicit framing -- that the hand-built descriptor baseline is the one to beat -- holds under
+   our protocol and not under MolE's. MolE's protocol is worth +0.017 to RDKit against +0.041 to
+   MolE, as expected of a search space built for 1000-d embeddings.
+3. **The GPT gain survives the protocol change, but stops being significant against MolE.**
    MolE + GPT-5.2 beats MolE by +0.022 in 4 of 5 trials here, against +0.032 pooled (5/5,
    p = 0.011 on per-strain AP) under our protocol. MolE's protocol roughly doubles the
    trial-to-trial SD of the paired difference (0.034 vs 0.016), so the same-sized effect no
    longer separates from zero at n = 5. The honest claim is a small, consistently positive
    effect that one protocol resolves and the other does not.
-2. **Protocol choice is not neutral between representations.** MolE's recipe is worth about
+4. **Protocol choice is not neutral between representations.** MolE's recipe is worth about
    +0.04 to MolE and -0.03 to GPT-5.2 alone. Deep unregularised trees on raw features suit the
    1000-d embeddings; the 45 GPT features need the scaling, class weighting and early stopping
    our pipeline provides. This is a reason to report both protocols rather than adopt either as
    "the" protocol.
-3. **MolE's published 0.7797 is a draw from a very wide distribution, not a protocol advantage
+5. **MolE's published 0.7797 is a draw from a very wide distribution, not a protocol advantage
    we failed to match.** Across the 125 MolE-alone fits, test PR-AUC spans 0.229 to 0.810
    (validation 0.230 to 0.713); the best (trial, configuration) cell averages 0.7747. MolE's
    winning configuration (1000 trees, depth 100, eta 0.1, subsample 1.0) was not drawn once in
    25 draws, matching the ~1.6% per-trial chance estimated in Task 0. Our 5 trials of their own
    protocol average 0.7146.
-4. **Validation barely ranks test, under their protocol too.** Within a trial, across the 5
-   configurations, Spearman rho(val, test) averages 0.44 for MolE, 0.78 for MolE + GPT-5.2 and
-   0.72 for GPT-5.2 only; selecting on test rather than validation would gain MolE up to +0.066
+6. **Validation barely ranks test, under their protocol too.** Within a trial, across the 5
+   configurations, Spearman rho(val, test) averages 0.44 for MolE, 0.78 for MolE + GPT-5.2,
+   0.72 for GPT-5.2 only and 0.70 for RDKit; selecting on test rather than validation would gain MolE up to +0.066
    in a single trial. The inverted validation/test ordering the reviewers objected to is a
    property of a 120-compound test set under a 5-draw search, not of GPT features.
-5. **A seventh of MolE's space cannot work.** 50 of 375 fits score below 0.40, all at eta = 1.0
-   or eta = 0.3 with 500 deep trees. Mean test by eta: 0.697 (0.05), 0.697 (0.10), 0.646 (0.30),
-   0.447 (1.00). A 5-draw search spends much of its budget there, which is why its selected test
+7. **An eighth of MolE's space cannot work.** 64 of 500 fits score below 0.40, all at eta = 1.0
+   or eta = 0.3 with 500 deep trees. Mean test by eta: 0.693 (0.05), 0.693 (0.10), 0.647 (0.30),
+   0.452 (1.00). A 5-draw search spends much of its budget there, which is why its selected test
    values swing by +/-0.1.
 
 **Preprocessing, against Table 1.** The per-column transform of the GPT block is identical in
