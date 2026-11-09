@@ -140,11 +140,48 @@ GPT+Mole/
 │   │   └── chemical_library_fig5_compounds.tsv      # Fig5 compound subset (~39)
 │   └── misc/                               # Extra/exploratory runs (not in paper)
 │
+├── scripts/                                  # Revision analyses (post-review)        +
+│   ├── run_table1.py                        # All Table 1 rows x N trials, shared configs
+│   ├── aggregate_table1.py                  # Per-trial results -> mean +/- SD table
+│   ├── reproduce_mole_original.py           # Reproduces MolE's published 0.7797
+│   ├── run_mole_protocol_search.py          # MolE's full original search, repeated
+│   ├── run_mole_method.py                   # Every row under MolE's single recipe
+│   ├── flatten_guided.py                    # One consistent schema for guided features
+│   ├── feature_overlap_matching.py          # Exact / normalised / embedding overlap
+│   ├── ap_g_comparison.py                   # AP-G with MolE-only and RDKit-only controls
+│   └── check_seed_effect.py, check_split_provenance.py, match_table_rows.py
+│
+├── kaggle/                                   # GPU runs (Kaggle, ~30 h/week free)      +
+│   ├── build_bundle.py                      # Packs inputs + scripts into one zip
+│   ├── gpt_mole_trials.ipynb                # Table 1 over 5 trials
+│   ├── mole_method_all_rows.ipynb           # Every row under MolE's recipe
+│   ├── task8a_mole_protocol.ipynb           # MolE's full protocol, 5 trials
+│   └── task8b_gptonly_guided.ipynb          # GPT-only and guided rows, 5 trials
+│
+├── revision_outputs/                         # The revision deliverable               +
+│   ├── results.md                           # Full write-up, all tasks
+│   ├── tables.tex                           # Seven paper-ready LaTeX tables
+│   ├── scripts/                             # t1-t6 + assemble.py, regenerate everything
+│   ├── data/                                # Every number behind the tables
+│   ├── figures/                             # Vector PDFs
+│   └── sections/                            # Per-task source for results.md
+│
+├── results/ (revision runs)                                                            +
+│   ├── table1_trials/                       # 9 rows x 5 trials, our protocol
+│   ├── table1_trials_extra/                 # GPT-only + guided, 18 rows x 5 trials
+│   ├── mole_protocol_trials/                # MolE's full protocol, 500 fits
+│   ├── mole_method_all_rows/                # Every row, MolE's single configuration
+│   └── mole_original_protocol/              # The 0.7797 reproduction
+│
+├── FINDINGS.md                               # Audit trail: every defect and check     +
+├── REPRODUCIBILITY.md                        # Exact versions and run order            +
+├── Dockerfile, requirements-lock.txt         # Pinned environment                      +
 ├── .gitignore
 ├── requirements.txt
 └── README.md
 
 * = added or significantly updated in the freeform / MCE extension phase
++ = added in the post-review revision
 ```
 
 ---
@@ -507,6 +544,12 @@ figures/figure7_ap_g_vs_mic/
 | Reproduce Figure 7 (AP-G vs MIC) | `analysis/AP_VS_MIC_MCE.ipynb` |
 | Feature overlap Venn diagrams & tables | `analysis/freeform_feature_overlap_analysis.ipynb` |
 | Add a new GPT model variant | Run `feature_generation.py --model_name <new-model>`, add to `MODEL_CONFIGS` in `final_analysis.ipynb` |
+| **What the review changed** | [`FINDINGS.md`](FINDINGS.md) |
+| **Revision write-up and tables** | [`revision_outputs/results.md`](revision_outputs/results.md), [`tables.tex`](revision_outputs/tables.tex) |
+| **Re-run Table 1 over N trials** | `python scripts/run_table1.py --trials 0,1,2,3,4` |
+| **Reproduce MolE's published 0.7797** | `python scripts/reproduce_mole_original.py` |
+| **Run MolE's original protocol** | `python scripts/run_mole_protocol_search.py` |
+| **Run the long jobs on a free GPU** | `kaggle/` — build the bundle, then the notebooks |
 
 ---
 
@@ -583,14 +626,19 @@ negative association (ρ = −0.338).
 
 | Result | File(s) / Notebook |
 |---|---|
+| Result | File(s) / Notebook |
+|---|---|
 | **Table 1** (guided GPT models) | `results/guided/gpt-*/mole_plus_gpt/per_strain_metrics_mole_plus_gpt.csv` |
 | **Table 3** (freeform GPT models) | `results/freeform/gpt-*/per_strain_metrics_mole_plus_gpt.csv` |
 | **Figure 3** (feature overlap, Venn diagrams) | `analysis/freeform_feature_overlap_analysis.ipynb` |
 | **Figure 7** (AP-G vs MIC, MCE library) | `analysis/AP_VS_MIC_MCE.ipynb` + `results/mechchem/ap_scores_gpt52.csv` |
+| Multi-trial re-runs | `results/table1_trials/`, `results/table1_trials_extra/` |
+| MolE's original protocol | `results/mole_protocol_trials/` |
 
 > All results use the scaffold-held-out split in `data/raw_data/maier_scaffold_split.tsv` (120 test compounds).
-> The `5 trials` in the paper refers to 5 random hyperparameter configurations, each evaluated
-> over 3 random seeds, with one final test evaluation using the best configuration.
+> A trial is one complete run of the pipeline: the hyperparameter search, selection on validation
+> PR-AUC, and a single test evaluation. `scripts/run_table1.py --trials 0,1,2,3,4` repeats it with
+> seeds 0-4; all rows within a trial share the sampled configurations, so comparisons are paired.
 > API calls used `temperature=0.0` — no tools, retrieval, or external databases were enabled.
 
 ---
