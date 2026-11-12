@@ -1,0 +1,31 @@
+{
+  "xgboost": "3.2.0",
+  "tree_method": "hist",
+  "params": {
+    "n_estimators": 1000,
+    "max_depth": 100,
+    "eta": 0.1,
+    "subsample": 1.0,
+    "objective": "binary:logistic"
+  },
+  "fit_minutes": 11.275918817520141,
+  "published": {
+    "validation_prauc": 0.7009655554019908,
+    "test_prauc": 0.7797609717204966
+  },
+  "valid": {
+    "prauc_trapz": 0.6904909156929636,
+    "average_precision": 0.6906337442154129,
+    "roc_auc": 0.8443126251599431
+  },
+  "test": {
+    "prauc_trapz": 0.7655455748777257,
+    "average_precision": 0.7656567903013721,
+    "roc_auc": 0.9058584000539646
+  },
+  "vs_published_predictions": {
+    "n_pairs": 4800,
+    "pearson": 0.9682123236224754,
+    "max_abs_diff": 0.6086613883578491
+  }
+}
